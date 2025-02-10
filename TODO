@@ -1,0 +1,31 @@
+- workflow (steps of the analysis, like shinymgr/FossilSimShiny)
+  1. occurrence data
+    - get data (paleobiodb package) (includes filtering?)
+    - clean data (palaeoverse)
+    - paleoreconstruction of coordinates (palaeoverse or rgplates)
+    - visualize data (ggplot2, deeptime, rphylopic?)
+      - Should be able to make a large number of plots without hard-coding
+    - summarize data (dplyr)
+    - analyze data (???)
+      - possibly multiple collapsed divs?
+      - PCA of site composition?
+  2. macrostrat
+    - get data (rmacrostrat)
+    - clean data (dplyr)
+    - visualize data (ggplot2, deeptime)
+    - analyze data?
+  3. ???
+- reporting (rendered quarto file)
+  - options to download as HTML/PDF/qmd
+  - regenerates any time something in the analysis changes?
+  - https://rstudio.github.io/shinymeta/
+
+* ensure that everything is fairly modular (look into how shinymgr makes this work)
+  * but everything also needs to work with the reporting
+  * ideally, we would release this with one or two workflows, but then could add more workflows in the future
+* state must be saved when moving between workflow and reporting
+* is the reporting at the workflow level (separate report for each workflow type) or at the shiny app level (one report based on whatever workflow you last used)?
+
+* other thoughts:
+  - drag-and-drop? or some other way to pick and choose workflow (including order)
+
