@@ -23,9 +23,11 @@
 * ensure that everything is fairly modular (look into how shinymgr makes this work)
   * but everything also needs to work with the reporting
   * ideally, we would release this with one or two workflows, but then could add more workflows in the future
+  * https://mastering-shiny.org/scaling-modules.html
 * state must be saved when moving between workflow and reporting
 * is the reporting at the workflow level (separate report for each workflow type) or at the shiny app level (one report based on whatever workflow you last used)?
 
 * other thoughts:
   - drag-and-drop? or some other way to pick and choose workflow (including order)
+    - https://rstudio.github.io/sortable/articles/cloning.html
 
