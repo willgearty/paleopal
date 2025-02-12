@@ -16,6 +16,7 @@ library(dplyr)
 library(htmltools)
 library(fontawesome)
 library(bslib)
+library(shinymeta)
 
 # libraries for data handling/viz
 library(dplyr)

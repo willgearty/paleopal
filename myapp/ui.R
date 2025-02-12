@@ -17,8 +17,21 @@ tagList(
     ## title ----
     title= 'paleopal',
     ## panels ----
-    test_module_ui("test_module"),
-    nav_panel("About",
+    nav_panel(
+      "Conduct an Analysis",
+      layout_sidebar(
+        test_module_ui("test_module"),
+        sidebar = sidebar(
+          card(
+            includeMarkdown("./modules/test_report.qmd")
+          ),
+          title = "Report",
+          width = "40%", position = "right"
+        )
+      )
+    ),
+    nav_panel(
+      "About",
       p("This was made with love by William Gearty")
     )
   )
