@@ -21,6 +21,7 @@ library(shinymeta)
 # libraries for data handling/viz
 library(dplyr)
 library(ggplot2)
+library(rlang)
 
 # paleo libraries
 # require curl which can't be used for shinylive apps
@@ -29,5 +30,5 @@ library(palaeoverse)
 library(deeptime)
 
 # load modules
-app_mods <- list.files("./modules", pattern = "*.R", full.names = TRUE)
+app_mods <- list.files("./modules", pattern = "*ui.R", full.names = TRUE, recursive = TRUE)
 sapply(app_mods, FUN = source)

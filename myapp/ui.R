@@ -20,13 +20,11 @@ tagList(
     nav_panel(
       "Conduct an Analysis",
       layout_sidebar(
-        test_module_ui("test_module"),
+        test_module_ui_main(),
         sidebar = sidebar(
-          card(
-            includeMarkdown("./modules/test_report.qmd")
-          ),
+          test_module_ui_report(),
           title = "Report",
-          width = "40%", position = "right"
+          width = "30%", position = "right"
         )
       )
     ),
