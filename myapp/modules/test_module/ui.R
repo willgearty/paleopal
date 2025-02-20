@@ -25,8 +25,8 @@ test_module_ui_main <- function() {
 }
 
 test_module_ui_report <- function() {
-  card(
-    verbatimTextOutput("code"),
-    plotOutput("map"),
+  tagList(
+    verbatimTextOutput("code1"),
+    plotOutput("map1")
   )
 }

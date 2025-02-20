@@ -22,6 +22,7 @@ tagList(
       layout_sidebar(
         test_module_ui_main(),
         sidebar = sidebar(
+          verbatimTextOutput("libraries"),
           test_module_ui_report(),
           title = "Report",
           width = "30%", position = "right"
