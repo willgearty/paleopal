@@ -29,8 +29,18 @@ function(input, output, session) {
     inject(expandChain(!!!libraries_chain))
   })
 
-  # TODO: convert this to a downloadable .Rmd file
-  output$code <- renderPrint({
-    inject(expandChain(!!!code_chain))
-  })
+  output$download_script <- downloadHandler(
+    filename = "paleopal_script.zip",
+    content = function(file) {
+      buildRmdBundle(
+        "./modules/test_report.qmd",
+        file,
+        vars = list(
+          libraries = inject(expandChain(!!!libraries_chain)),
+          code = inject(expandChain(!!!code_chain))
+        ),
+        render_args = list(output_format = c("html_document", "pdf_document"))
+      )
+    }
+  )
 }

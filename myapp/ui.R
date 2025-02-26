@@ -24,7 +24,7 @@ tagList(
         sidebar = sidebar(
           verbatimTextOutput("libraries"),
           test_module_ui_report(),
-          title = "Report",
+          title = downloadButton("download_script", "Download script"),
           width = "30%", position = "right"
         )
       )
