@@ -20,10 +20,15 @@ tagList(
     nav_panel(
       "Conduct an Analysis",
       layout_sidebar(
-        test_module_ui_main(),
-        actionButton("add_step", "Add step"),
-        actionButton("remove_step", "Remove step"),
-        uiOutput("pipeline"),
+        card(
+          card_header("Workflow Steps"),
+          test_module_ui_main(),
+          actionButton("remove_step", "Remove last step")
+        ),
+        card(
+          card_header("Workflow"),
+          uiOutput("workflow")
+        ),
         sidebar = sidebar(
           downloadButton("download_script", "Download script"),
           uiOutput("report"),

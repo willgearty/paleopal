@@ -22,9 +22,18 @@ output$code1 <- renderPrint({
   )
 })
 
-observeEvent(input$add_step, {
+observeEvent(input$add_option_1, {
+  workflow_list(append(workflow_list(), test_module_ui_option_1()))
   report_list(append(report_list(), test_module_ui_report()))
   code_chain <- append(code_chain, quote(invisible(occs())))
   code_chain <- append(code_chain, quote(c()))
   code_chain <- append(code_chain, quote(output$map1()))
+}, ignoreInit = TRUE)
+
+observeEvent(input$add_option_2, {
+  workflow_list(append(workflow_list(), test_module_ui_option_2()))
+}, ignoreInit = TRUE)
+
+observeEvent(input$add_option_3, {
+  workflow_list(append(workflow_list(), test_module_ui_option_3()))
 }, ignoreInit = TRUE)

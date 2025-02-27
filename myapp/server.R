@@ -21,6 +21,8 @@ function(input, output, session) {
   # a list of quote code bits that will go after the libraries are loaded
   code_chain <- list()
 
+  # lists of elements for the workflow and report
+  workflow_list <- reactiveVal(tagList())
   report_list <- reactiveVal(tagList())
 
   # source each module's server.R file
@@ -33,6 +35,7 @@ function(input, output, session) {
 
   observeEvent(input$remove_step, {
     report_list(head(report_list(), length(report_list()) - 1))
+    workflow_list(head(workflow_list(), length(workflow_list()) - 1))
   }, ignoreInit = TRUE)
 
   output$report <- renderUI({
@@ -40,6 +43,10 @@ function(input, output, session) {
       verbatimTextOutput("libraries"),
       report_list()
     )
+  })
+
+  output$workflow <- renderUI({
+    accordion(!!!workflow_list(), multiple = FALSE)
   })
 
   output$download_script <- downloadHandler(
