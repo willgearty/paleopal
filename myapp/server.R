@@ -19,11 +19,15 @@ function(input, output, session) {
   libraries_chain <- list(quote(quote(library(tidyverse))))
 
   # a list of quote code bits that will go after the libraries are loaded
-  code_chain <- list()
+  code_chain <- reactiveVal(list())
 
-  # lists of elements for the workflow and report
+  # ordered list of elements in the workflow
   workflow_list <- reactiveVal(tagList())
+  # ordered list of elements in the report
   report_list <- reactiveVal(tagList())
+  # unordered, named list of intermediate variables that need to be global for
+  # assembly of the markdown file
+  intermediate_list <- reactiveValues()
 
   # source each module's server.R file
   # make sure local = TRUE so they all share a namespace
@@ -57,7 +61,7 @@ function(input, output, session) {
         file,
         vars = list(
           libraries = inject(expandChain(!!!libraries_chain)),
-          code = inject(expandChain(!!!code_chain))
+          code = inject(expandChain(!!!code_chain()))
         ),
         render_args = list(output_format = c("html_document", "pdf_document"))
       )
