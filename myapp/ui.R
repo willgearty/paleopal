@@ -21,10 +21,12 @@ tagList(
       "Conduct an Analysis",
       layout_sidebar(
         test_module_ui_main(),
+        actionButton("add_step", "Add step"),
+        actionButton("remove_step", "Remove step"),
+        uiOutput("pipeline"),
         sidebar = sidebar(
-          verbatimTextOutput("libraries"),
-          test_module_ui_report(),
-          title = downloadButton("download_script", "Download script"),
+          downloadButton("download_script", "Download script"),
+          uiOutput("report"),
           width = "30%", position = "right"
         )
       )

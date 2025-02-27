@@ -21,6 +21,10 @@ output$code1 <- renderPrint({
     output$map1()
   )
 })
-code_chain <- append(code_chain, quote(invisible(occs())))
-code_chain <- append(code_chain, quote(c()))
-code_chain <- append(code_chain, quote(output$map1()))
+
+observeEvent(input$add_step, {
+  report_list(append(report_list(), test_module_ui_report()))
+  code_chain <- append(code_chain, quote(invisible(occs())))
+  code_chain <- append(code_chain, quote(c()))
+  code_chain <- append(code_chain, quote(output$map1()))
+}, ignoreInit = TRUE)

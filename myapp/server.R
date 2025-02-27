@@ -21,12 +21,25 @@ function(input, output, session) {
   # a list of quote code bits that will go after the libraries are loaded
   code_chain <- list()
 
+  report_list <- reactiveVal(tagList())
+
   # source each module's server.R file
   # make sure local = TRUE so they all share a namespace
   source("./modules/test_module/server.R", local = TRUE)
 
   output$libraries <- renderPrint({
     inject(expandChain(!!!libraries_chain))
+  })
+
+  observeEvent(input$remove_step, {
+    report_list(head(report_list(), length(report_list()) - 1))
+  }, ignoreInit = TRUE)
+
+  output$report <- renderUI({
+    tagList(
+      verbatimTextOutput("libraries"),
+      report_list()
+    )
   })
 
   output$download_script <- downloadHandler(
