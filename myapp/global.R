@@ -29,6 +29,6 @@ library(paleobioDB)
 library(palaeoverse)
 library(deeptime)
 
-# load modules
+# load UI components of modules
 app_mods <- list.files("./modules", pattern = "*ui.R", full.names = TRUE, recursive = TRUE)
 sapply(app_mods, FUN = source)

@@ -16,6 +16,7 @@ options("styler.cache_name" = NULL)
 # Define server logic required to draw a histogram
 function(input, output, session) {
   # a list of quoted code bits that will go at the very top of the report
+  # TODO: might need to make this reactive?
   libraries_chain <- list(quote(quote(library(tidyverse))))
 
   # a list of quote code bits that will go after the libraries are loaded
@@ -33,15 +34,19 @@ function(input, output, session) {
   # make sure local = TRUE so they all share a namespace
   source("./modules/test_module/server.R", local = TRUE)
 
+  # add libraries to load at the beginning of the report
   output$libraries <- renderPrint({
     inject(expandChain(!!!libraries_chain))
   })
 
+  # handle removing the last step
+  # TODO: this should be handled for any arbitrary step
   observeEvent(input$remove_step, {
     report_list(head(report_list(), length(report_list()) - 1))
     workflow_list(head(workflow_list(), length(workflow_list()) - 1))
   }, ignoreInit = TRUE)
 
+  # render the report
   output$report <- renderUI({
     tagList(
       verbatimTextOutput("libraries"),
@@ -49,10 +54,12 @@ function(input, output, session) {
     )
   })
 
+  # render the workflow
   output$workflow <- renderUI({
     accordion(!!!workflow_list(), multiple = FALSE)
   })
 
+  # handle downloading a zip folder with the markdown script and rendered files
   output$download_script <- downloadHandler(
     filename = "paleopal_script.zip",
     content = function(file) {
@@ -60,6 +67,7 @@ function(input, output, session) {
         "./modules/test_report.qmd",
         file,
         vars = list(
+          # lists of quoted code bits, need to be injected into expandChain()
           libraries = inject(expandChain(!!!libraries_chain)),
           code = inject(expandChain(!!!code_chain()))
         ),
