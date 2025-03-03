@@ -11,6 +11,15 @@
 
 tagList(
   useShinyjs(),
+  tags$head(
+    tags$style(
+      HTML(
+        "#\\.accordion_version {
+          display: none;
+        }"
+      )
+    )
+  ),
   page_navbar(
     theme = bs_theme(version = 5, preset="bootstrap"),
     fillable_mobile = TRUE,
@@ -23,11 +32,12 @@ tagList(
         card(
           card_header("Workflow Steps"),
           test_module_ui_main(),
-          actionButton("remove_step", "Remove last step")
+          actionButton(".remove_step", "Remove last step")
         ),
         card(
           card_header("Workflow"),
-          uiOutput("workflow")
+          uiOutput("workflow"),
+          textInput(".accordion_version", label = NULL, value = "0")
         ),
         sidebar = sidebar(
           downloadButton("download_script", "Download script"),

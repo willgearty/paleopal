@@ -4,7 +4,7 @@ test_module_ui_option_1 <- function(id) {
       "Rule 1: Identify your taxonomic scope",
       p("This is the first step"),
       selectInput(paste0("genus_", id), "Choose a genus:",
-                  choices = c("Tyrannosaurus", "Dimetrodon")),
+                  choices = c("Tyrannosaurus", "Dimetrodon"))
     )
   )
 }
@@ -31,9 +31,9 @@ test_module_ui_option_3 <- function(id) {
 
 test_module_ui_main <- function() {
   tagList(
-    actionButton("add_option_1", "Download data"),
-    actionButton("add_option_2", "Save the data"),
-    actionButton("add_option_3", "Explore the data"),
+    actionButton(".add_option_1", "Download data"),
+    actionButton(".add_option_2", "Save the data"),
+    actionButton(".add_option_3", "Explore the data"),
   )
 }
 

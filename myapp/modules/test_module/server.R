@@ -2,8 +2,8 @@
 libraries_chain <- append(libraries_chain, quote(quote(library(paleobioDB))))
 
 # handle adding the first option
-observeEvent(input$add_option_1, {
-  ind <- length(workflow_list()) + 1
+observeEvent(input$.add_option_1, {
+  ind <- as.numeric(isolate(input$.accordion_version))
 
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
@@ -46,13 +46,13 @@ observeEvent(input$add_option_1, {
 }, ignoreInit = TRUE)
 
 # handle adding the second option
-observeEvent(input$add_option_2, {
-  ind <- length(workflow_list()) + 1
+observeEvent(input$.add_option_2, {
+  ind <- as.numeric(isolate(input$.accordion_version))
   workflow_list(append(workflow_list(), test_module_ui_option_2(ind)))
 }, ignoreInit = TRUE)
 
 # handle adding the third option
-observeEvent(input$add_option_3, {
-  ind <- length(workflow_list()) + 1
+observeEvent(input$.add_option_3, {
+  ind <- as.numeric(isolate(input$.accordion_version))
   workflow_list(append(workflow_list(), test_module_ui_option_3(ind)))
 }, ignoreInit = TRUE)

@@ -29,6 +29,8 @@ function(input, output, session) {
   # unordered, named list of intermediate variables that need to be global for
   # assembly of the markdown file
   intermediate_list <- reactiveValues()
+  # unordered, named list of old values for form elements
+  old_vals <- reactiveVal()
 
   # source each module's server.R file
   # make sure local = TRUE so they all share a namespace
@@ -41,7 +43,7 @@ function(input, output, session) {
 
   # handle removing the last step
   # TODO: this should be handled for any arbitrary step
-  observeEvent(input$remove_step, {
+  observeEvent(input$.remove_step, {
     report_list(head(report_list(), length(report_list()) - 1))
     workflow_list(head(workflow_list(), length(workflow_list()) - 1))
   }, ignoreInit = TRUE)
@@ -56,8 +58,24 @@ function(input, output, session) {
 
   # render the workflow
   output$workflow <- renderUI({
+    old_vals(isolate(reactiveValuesToList(input)))
+    updateTextInput(inputId = ".accordion_version",
+                    value =
+                      as.numeric(isolate(input$.accordion_version)) + 1)
     accordion(!!!workflow_list(), multiple = FALSE)
   })
+
+  # restore old inputs
+  observeEvent(input$.accordion_version, {
+    old_vals_list <- isolate(old_vals())
+    for (idx in seq_along(old_vals_list)) {
+      runjs(paste0("$('#", names(old_vals_list)[[idx]],
+                   "').val('", old_vals_list[[idx]],
+                   "').change().data('selectize').setValue('",
+                   old_vals_list[[idx]],
+                   "');"))
+    }
+  }, ignoreInit = TRUE)
 
   # handle downloading a zip folder with the markdown script and rendered files
   output$download_script <- downloadHandler(
