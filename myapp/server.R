@@ -20,7 +20,8 @@ function(input, output, session) {
   # TODO: might need to make this reactive?
   libraries_chain <- list(quote(quote(library(tidyverse))))
 
-  # a list of quote code bits that will go after the libraries are loaded
+  # a named list of quoted code bits that will go after the libraries are loaded
+  # each element may also be a list of quoted code bits that will be flattened
   code_chain <- reactiveVal(list())
 
   # ordered, named list of elements in the workflow
@@ -48,12 +49,11 @@ function(input, output, session) {
 
     # handle removing this step from the report and workflow
     observeEvent(input[[paste0(".remove_step_", ind)]], {
-      tmp_list <- report_list()
-      tmp_list[[paste0("step_", ind)]] <- NULL
-      report_list(tmp_list)
-      tmp_list <- workflow_list()
-      tmp_list[[paste0("step_", ind)]] <- NULL
-      workflow_list(tmp_list)
+      for (fun in c(report_list, workflow_list, code_chain)) {
+        tmp_list <- fun()
+        tmp_list[[paste0("step_", ind)]] <- NULL
+        fun(tmp_list)
+      }
     }, ignoreInit = TRUE)
   }
 
@@ -108,7 +108,7 @@ function(input, output, session) {
         vars = list(
           # lists of quoted code bits, need to be injected into expandChain()
           libraries = inject(expandChain(!!!libraries_chain)),
-          code = inject(expandChain(!!!code_chain()))
+          code = inject(expandChain(!!!list_flatten(unname(code_chain()))))
         ),
         render_args = list(output_format = c("html_document", "pdf_document"))
       )

@@ -37,11 +37,27 @@ test_module_ui_main <- function() {
   )
 }
 
-test_module_ui_report <- function(ind) {
+test_module_report_option_1 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput(paste0("code_", ind)),
       plotOutput(paste0("map_", ind))
+    )
+  )
+}
+
+test_module_report_option_2 <- function(ind) {
+  tagList(
+    div(
+      textOutput(paste0("text_", ind))
+    )
+  )
+}
+
+test_module_report_option_3 <- function(ind) {
+  tagList(
+    div(
+      textOutput(paste0("text_", ind))
     )
   )
 }

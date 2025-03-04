@@ -21,6 +21,7 @@ library(shinymeta)
 library(dplyr)
 library(ggplot2)
 library(rlang)
+library(purrr)
 
 # paleo libraries
 # require curl which can't be used for shinylive apps
