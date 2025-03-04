@@ -31,8 +31,7 @@ tagList(
       layout_sidebar(
         card(
           card_header("Workflow Steps"),
-          test_module_ui_main(),
-          actionButton(".remove_step", "Remove last step")
+          test_module_ui_main()
         ),
         card(
           card_header("Workflow"),

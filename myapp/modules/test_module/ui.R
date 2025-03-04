@@ -1,30 +1,30 @@
-test_module_ui_option_1 <- function(id) {
+test_module_ui_option_1 <- function(ind) {
   tagList(
-    accordion_panel(
+    accordion_panel_paleopal(ind = ind,
       "Rule 1: Identify your taxonomic scope",
       p("This is the first step"),
-      selectInput(paste0("genus_", id), "Choose a genus:",
+      selectInput(paste0("genus_", ind), "Choose a genus:",
                   choices = c("Tyrannosaurus", "Dimetrodon"))
     )
   )
 }
 
-test_module_ui_option_2 <- function(id) {
+test_module_ui_option_2 <- function(ind) {
   tagList(
-    accordion_panel(
+    accordion_panel_paleopal(ind = ind,
       "Rule 2: Keep raw data raw",
       p("This is the second step"),
-      selectInput(paste0("dataset_", id), "Choose a dataset:", choices = c("mtcars", "iris"))
+      selectInput(paste0("dataset_", ind), "Choose a dataset:", choices = c("mtcars", "iris"))
     )
   )
 }
 
-test_module_ui_option_3 <- function(id) {
+test_module_ui_option_3 <- function(ind) {
   tagList(
-    accordion_panel(
+    accordion_panel_paleopal(ind = ind,
       "Step 3",
       p("This is the third step"),
-      selectInput(paste0("dataset2_", id), "Choose a dataset:", choices = c("mtcars", "iris"))
+      selectInput(paste0("dataset2_", ind), "Choose a dataset:", choices = c("mtcars", "iris"))
     )
   )
 }
@@ -37,11 +37,11 @@ test_module_ui_main <- function() {
   )
 }
 
-test_module_ui_report <- function(id) {
+test_module_ui_report <- function(ind) {
   tagList(
     div(
-      verbatimTextOutput(paste0("code_", id)),
-      plotOutput(paste0("map_", id))
+      verbatimTextOutput(paste0("code_", ind)),
+      plotOutput(paste0("map_", ind))
     )
   )
 }

@@ -15,6 +15,7 @@ options("styler.cache_name" = NULL)
 
 # Define server logic required to draw a histogram
 function(input, output, session) {
+  # shared server objects ####
   # a list of quoted code bits that will go at the very top of the report
   # TODO: might need to make this reactive?
   libraries_chain <- list(quote(quote(library(tidyverse))))
@@ -22,9 +23,9 @@ function(input, output, session) {
   # a list of quote code bits that will go after the libraries are loaded
   code_chain <- reactiveVal(list())
 
-  # ordered list of elements in the workflow
+  # ordered, named list of elements in the workflow
   workflow_list <- reactiveVal(tagList())
-  # ordered list of elements in the report
+  # ordered, named list of elements in the report
   report_list <- reactiveVal(tagList())
   # unordered, named list of intermediate variables that need to be global for
   # assembly of the markdown file
@@ -32,21 +33,40 @@ function(input, output, session) {
   # unordered, named list of old values for form elements
   old_vals <- reactiveVal()
 
+  # common server functions ####
+  # add a step to the report and workflow
+  add_step <- function(fun_workflow, fun_report, ind) {
+    # add the UI elements to the workflow
+    tmp_list <- workflow_list()
+    tmp_list[[paste0("step_", ind)]] <- fun_workflow(ind)
+    workflow_list(tmp_list)
+
+    # add the UI elements to the report
+    tmp_list <- report_list()
+    tmp_list[[paste0("step_", ind)]] <- fun_report(ind)
+    report_list(tmp_list)
+  }
+
+  # remove a specific step from the report and workflow
+  remove_step <- function(ind) {
+    tmp_list <- report_list()
+    tmp_list[[paste0("step_", ind)]] <- NULL
+    report_list(tmp_list)
+    tmp_list <- workflow_list()
+    tmp_list[[paste0("step_", ind)]] <- NULL
+    workflow_list(tmp_list)
+  }
+
+  # source server.R files ####
   # source each module's server.R file
   # make sure local = TRUE so they all share a namespace
   source("./modules/test_module/server.R", local = TRUE)
 
+  # render dynamic UI ####
   # add libraries to load at the beginning of the report
   output$libraries <- renderPrint({
     inject(expandChain(!!!libraries_chain))
   })
-
-  # handle removing the last step
-  # TODO: this should be handled for any arbitrary step
-  observeEvent(input$.remove_step, {
-    report_list(head(report_list(), length(report_list()) - 1))
-    workflow_list(head(workflow_list(), length(workflow_list()) - 1))
-  }, ignoreInit = TRUE)
 
   # render the report
   output$report <- renderUI({
@@ -62,7 +82,7 @@ function(input, output, session) {
     updateTextInput(inputId = ".accordion_version",
                     value =
                       as.numeric(isolate(input$.accordion_version)) + 1)
-    accordion(!!!workflow_list(), multiple = FALSE)
+    accordion(!!!unname(workflow_list()), multiple = FALSE)
   })
 
   # restore old inputs
@@ -77,6 +97,7 @@ function(input, output, session) {
     }
   }, ignoreInit = TRUE)
 
+  # report download ####
   # handle downloading a zip folder with the markdown script and rendered files
   output$download_script <- downloadHandler(
     filename = "paleopal_script.zip",

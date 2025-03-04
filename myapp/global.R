@@ -12,7 +12,6 @@
 # libraries for the UI
 library(shiny)
 library(shinyjs)
-library(dplyr)
 library(htmltools)
 library(fontawesome)
 library(bslib)
@@ -32,3 +31,13 @@ library(deeptime)
 # load UI components of modules
 app_mods <- list.files("./modules", pattern = "*ui.R", full.names = TRUE, recursive = TRUE)
 sapply(app_mods, FUN = source)
+
+# common UI components ####
+
+# a version of the accordion panel that includes a remove button
+accordion_panel_paleopal <- function(ind, ...) {
+  accordion_panel(
+    ...,
+    actionButton(paste0(".remove_step_", ind), "Remove this step")
+  )
+}
