@@ -41,9 +41,6 @@ observeEvent(input$.add_option_1, {
                       inject(quote(output[[paste0("map_", !!ind)]]()))
                     )
   ))
-
-  # handle removing the step
-  remove_step(ind)
 }, ignoreInit = TRUE)
 
 # handle adding the second option
@@ -52,9 +49,6 @@ observeEvent(input$.add_option_2, {
 
   # add the UI elements to the workflow and report
   add_step(test_module_ui_option_2, test_module_ui_report, ind)
-
-  # handle removing the step
-  remove_step(ind)
 }, ignoreInit = TRUE)
 
 # handle adding the third option
@@ -63,7 +57,4 @@ observeEvent(input$.add_option_3, {
 
   # add the UI elements to the workflow and report
   add_step(test_module_ui_option_3, test_module_ui_report, ind)
-
-  # handle removing the step
-  remove_step(ind)
 }, ignoreInit = TRUE)
