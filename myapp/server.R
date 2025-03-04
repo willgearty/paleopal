@@ -49,12 +49,14 @@ function(input, output, session) {
 
   # remove a specific step from the report and workflow
   remove_step <- function(ind) {
-    tmp_list <- report_list()
-    tmp_list[[paste0("step_", ind)]] <- NULL
-    report_list(tmp_list)
-    tmp_list <- workflow_list()
-    tmp_list[[paste0("step_", ind)]] <- NULL
-    workflow_list(tmp_list)
+    observeEvent(input[[paste0(".remove_step_", ind)]], {
+      tmp_list <- report_list()
+      tmp_list[[paste0("step_", ind)]] <- NULL
+      report_list(tmp_list)
+      tmp_list <- workflow_list()
+      tmp_list[[paste0("step_", ind)]] <- NULL
+      workflow_list(tmp_list)
+    }, ignoreInit = TRUE)
   }
 
   # source server.R files ####

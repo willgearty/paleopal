@@ -43,9 +43,7 @@ observeEvent(input$.add_option_1, {
   ))
 
   # handle removing the step
-  observeEvent(input[[paste0(".remove_step_", ind)]], {
-    remove_step(ind)
-  }, ignoreInit = TRUE)
+  remove_step(ind)
 }, ignoreInit = TRUE)
 
 # handle adding the second option
@@ -56,9 +54,7 @@ observeEvent(input$.add_option_2, {
   add_step(test_module_ui_option_2, test_module_ui_report, ind)
 
   # handle removing the step
-  observeEvent(input[[paste0(".remove_step_", ind)]], {
-    remove_step(ind)
-  }, ignoreInit = TRUE)
+  remove_step(ind)
 }, ignoreInit = TRUE)
 
 # handle adding the third option
@@ -69,7 +65,5 @@ observeEvent(input$.add_option_3, {
   add_step(test_module_ui_option_3, test_module_ui_report, ind)
 
   # handle removing the step
-  observeEvent(input[[paste0(".remove_step_", ind)]], {
-    remove_step(ind)
-  }, ignoreInit = TRUE)
+  remove_step(ind)
 }, ignoreInit = TRUE)
