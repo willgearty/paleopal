@@ -16,6 +16,7 @@ library(htmltools)
 library(fontawesome)
 library(bslib)
 library(shinymeta)
+library(sortable)
 
 # libraries for data handling/viz
 library(dplyr)
@@ -39,6 +40,7 @@ sapply(app_mods, FUN = source)
 accordion_panel_paleopal <- function(ind, ...) {
   accordion_panel(
     ...,
-    actionButton(paste0(".remove_step_", ind), "Remove this step")
+    actionButton(paste0(".remove_step_", ind), "Remove this step"),
+    value = paste0("step_", ind)
   )
 }
