@@ -39,6 +39,7 @@ function(input, output, session) {
   add_step <- function(fun_workflow, fun_report, ind) {
     # add the UI elements to the workflow
     accordion_panel_insert(".workflow_accordion", panel = fun_workflow(ind))
+    accordion_panel_open(".workflow_accordion", values = paste0("step_", ind))
 
     # add the UI elements to the report
     tmp_list <- report_list()
