@@ -29,18 +29,22 @@ tagList(
     nav_panel(
       "Conduct an Analysis",
       layout_sidebar(
-        card(
-          card_header("Workflow Steps"),
-          test_module_ui_main()
-        ),
-        card(
-          card_header("Workflow (click and drag to reorder)"),
-          accordion(id = ".workflow_accordion"),
-          textInput(".accordion_version", label = NULL, value = "1"),
-          sortable_js(".workflow_accordion",
-                      options = sortable_options(
-                        onSort = sortable_js_capture_input(input_id = ".sortable")
-                      ))
+        layout_column_wrap(
+          card(
+            card_header("Workflow Steps"),
+            test_module_ui_main()
+          ),
+          card(
+            card_header("Workflow (click and drag to reorder)"),
+            accordion(id = ".workflow_accordion"),
+            textInput(".accordion_version", label = NULL, value = "1"),
+            sortable_js(".workflow_accordion",
+                        options = sortable_options(
+                          onSort =
+                            sortable_js_capture_input(input_id = ".sortable")
+                        ))
+          ),
+          style = css(grid_template_columns = "1fr 2fr")
         ),
         sidebar = sidebar(
           downloadButton("download_script", "Download script"),
