@@ -16,12 +16,6 @@ tagList(
       HTML(
         "#\\.accordion_version {
           display: none;
-        }
-        #rank-list-\\.sortable, #\\.sortable, #\\.sortable .rank-list-item {
-          padding: 0;
-          border: 0;
-          margin: 0;
-          background-color: transparent;
         }"
       )
     )
