@@ -41,8 +41,12 @@ tagList(
         ),
         card(
           card_header("Workflow (click and drag to reorder)"),
-          uiOutput("workflow"),
-          textInput(".accordion_version", label = NULL, value = "0")
+          accordion(id = ".workflow_accordion"),
+          textInput(".accordion_version", label = NULL, value = "1"),
+          sortable_js(".workflow_accordion",
+                      options = sortable_options(
+                        onSort = sortable_js_capture_input(input_id = ".sortable")
+                      ))
         ),
         sidebar = sidebar(
           downloadButton("download_script", "Download script"),

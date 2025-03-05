@@ -37,28 +37,27 @@ function(input, output, session) {
   # common server functions ####
   # add a step to the report and workflow
   add_step <- function(fun_workflow, fun_report, ind) {
-    # the order may have changed since we last added a step
-    current_order <- isolate(input$.sortable)
-
     # add the UI elements to the workflow
-    tmp_list <- workflow_list()[current_order]
-    tmp_list[[paste0("step_", ind)]] <- fun_workflow(ind)
-    workflow_list(tmp_list)
+    accordion_panel_insert(".workflow_accordion", panel = fun_workflow(ind))
 
     # add the UI elements to the report
-    tmp_list <- report_list()[current_order]
+    tmp_list <- report_list()
     tmp_list[[paste0("step_", ind)]] <- fun_report(ind)
     report_list(tmp_list)
 
     # handle removing this step from the report and workflow
     observeEvent(input[[paste0(".remove_step_", ind)]], {
-      for (fun in c(report_list, workflow_list, code_chain)) {
-        current_order <- isolate(input$.sortable)
-        tmp_list <- fun()[current_order]
+      accordion_panel_remove(".workflow_accordion",
+                             target = paste0("step_", ind))
+      for (fun in c(report_list, code_chain)) {
+        tmp_list <- fun()
         tmp_list[[paste0("step_", ind)]] <- NULL
         fun(tmp_list)
       }
     }, ignoreInit = TRUE)
+    updateTextInput(inputId = ".accordion_version",
+                    value =
+                      as.numeric(isolate(input$.accordion_version)) + 1)
   }
 
   # source server.R files ####
@@ -84,25 +83,10 @@ function(input, output, session) {
   output$workflow <- renderUI({
     old_vals(isolate(reactiveValuesToList(input)))
     # TODO: figure out how to maintain which steps are open/expanded
-    updateTextInput(inputId = ".accordion_version",
-                    value =
-                      as.numeric(isolate(input$.accordion_version)) + 1)
     accordion(rank_list(labels = workflow_list(), input_id = ".sortable"),
               open = isolate(input$.workflow_accordion),
               id = ".workflow_accordion")
   })
-
-  # restore old inputs
-  observeEvent(input$.accordion_version, {
-    old_vals_list <- isolate(old_vals())
-    for (idx in seq_along(old_vals_list)) {
-      runjs(paste0("$('#", names(old_vals_list)[[idx]],
-                   "').val('", old_vals_list[[idx]],
-                   "').change().data('selectize').setValue('",
-                   old_vals_list[[idx]],
-                   "');"))
-    }
-  }, ignoreInit = TRUE)
 
   # handle workflow reordering
   observeEvent(input$.sortable, {
