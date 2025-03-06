@@ -57,11 +57,10 @@ function(input, output, session) {
     code_chain(tmp_list)
 
     # add the packages to the libraries chain
-    tmp_list <- isolate(libraries_chain())
+    tmp_list <- libraries_chain()
     tmp_list[[paste0("step_", ind)]] <-
       lapply(libs, function(lib) inject(quote(quote(library(!!lib)))))
     libraries_chain(tmp_list)
-    print(libraries_chain())
 
     # handle removing this step from the report and workflow
     observeEvent(input[[paste0(".remove_step_", ind)]], {
