@@ -4,8 +4,9 @@
 # one or more actionButton()s
 
 accordion_panel(
-  title = "Download Data",
+  title = "Clean Data",
   card(
-    actionButton(".mod01_add_option_1", "Download data from the PBDB")
+    actionButton(".mod02_add_option_1", "Filter by a specific column"),
+    actionButton(".mod02_add_option_2", "Remove duplicate rows")
   )
 )

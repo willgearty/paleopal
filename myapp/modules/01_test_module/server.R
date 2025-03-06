@@ -1,8 +1,9 @@
-# add libraries to load at the beginning of the report
-libraries_chain <- append(libraries_chain, quote(quote(library(paleobioDB))))
+# this file includes the server-side logic for the module
+# this includes adding libraries to the report, handling dynamic UI elements,
+# and setting up listeners
 
 # handle adding the first option
-observeEvent(input$.add_option_1, {
+observeEvent(input$.mod01_add_option_1, {
   ind <- as.numeric(input$.accordion_version)
 
   # build reactive expressions for each instance of this component
@@ -32,7 +33,7 @@ observeEvent(input$.add_option_1, {
   # add the UI elements to the workflow, report, and downloadable markdown
   # note that any local variables need to be injected with !!
   add_step(ind,
-           test_module_ui_option_1, test_module_report_option_1,
+           mod01_ui_option_1, mod01_report_option_1,
            list(
              inject(quote(
                invisible(intermediate_list[[paste0("occs_", !!ind)]]())
@@ -40,31 +41,6 @@ observeEvent(input$.add_option_1, {
              inject(quote(
                output[[paste0("map_", !!ind)]]()
              ))
-           ))
-}, ignoreInit = TRUE)
-
-# handle adding the second option
-observeEvent(input$.add_option_2, {
-  ind <- as.numeric(input$.accordion_version)
-
-  output[[paste0("text_", ind)]] <- renderText({
-    "This is the second step"
-  })
-
-  # add the UI elements to the workflow and report
-  add_step(ind, test_module_ui_option_2, test_module_report_option_2,
-           list(quote("#This is the second step")))
-}, ignoreInit = TRUE)
-
-# handle adding the third option
-observeEvent(input$.add_option_3, {
-  ind <- as.numeric(input$.accordion_version)
-
-  output[[paste0("text_", ind)]] <- renderText({
-    "This is the third step"
-  })
-
-  # add the UI elements to the workflow and report
-  add_step(ind, test_module_ui_option_3, test_module_report_option_3,
-           list(quote("#This is the third step")))
+           ),
+           c("paleobioDB", "ggplot2"))
 }, ignoreInit = TRUE)

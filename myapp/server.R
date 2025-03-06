@@ -16,9 +16,10 @@ options("styler.cache_name" = NULL)
 # Define server logic required to draw a histogram
 function(input, output, session) {
   # shared server objects ####
-  # a list of quoted code bits that will go at the very top of the report
-  # TODO: might need to make this reactive?
-  libraries_chain <- list(quote(quote(library(tidyverse))))
+  # a named list of quoted library() calls that go at the very top of the report
+  # each element may also be a list of quoted calls that will be flattened
+  # don't worry about duplicates, they will be filtered out
+  libraries_chain <- reactiveVal(list())
 
   # a named list of quoted code bits that will go after the libraries are loaded
   # each element may also be a list of quoted code bits that will be flattened
@@ -39,7 +40,8 @@ function(input, output, session) {
   # fun_workflow is the function that generates the UI elements for the workflow
   # fun_report is the function that generates the UI elements for the report
   # code_chain_list is a list of quoted code bits that will be added to code_chain()
-  add_step <- function(ind, fun_workflow, fun_report, code_chain_list) {
+  # libs is a character vector of R packages required for this step
+  add_step <- function(ind, fun_workflow, fun_report, code_chain_list, libs) {
     # add the UI elements to the workflow
     accordion_panel_insert(".workflow_accordion", panel = fun_workflow(ind))
     accordion_panel_open(".workflow_accordion", values = paste0("step_", ind))
@@ -54,11 +56,18 @@ function(input, output, session) {
     tmp_list[[paste0("step_", ind)]] <- code_chain_list
     code_chain(tmp_list)
 
+    # add the packages to the libraries chain
+    tmp_list <- isolate(libraries_chain())
+    tmp_list[[paste0("step_", ind)]] <-
+      lapply(libs, function(lib) inject(quote(quote(library(!!lib)))))
+    libraries_chain(tmp_list)
+    print(libraries_chain())
+
     # handle removing this step from the report and workflow
     observeEvent(input[[paste0(".remove_step_", ind)]], {
       accordion_panel_remove(".workflow_accordion",
                              target = paste0("step_", ind))
-      for (fun in c(report_list, code_chain)) {
+      for (fun in c(report_list, code_chain, libraries_chain)) {
         tmp_list <- fun()
         tmp_list[[paste0("step_", ind)]] <- NULL
         fun(tmp_list)
@@ -82,7 +91,12 @@ function(input, output, session) {
   # render dynamic UI ####
   # add libraries to load at the beginning of the report
   output$libraries <- renderPrint({
-    inject(expandChain(!!!libraries_chain))
+    inject(expandChain(
+      !!!libraries_chain() |>
+        unname() |>
+        list_flatten() |>
+        unique()
+    ))
   })
 
   # render the report
@@ -122,8 +136,19 @@ function(input, output, session) {
         file,
         vars = list(
           # lists of quoted code bits, need to be injected into expandChain()
-          libraries = inject(expandChain(!!!libraries_chain)),
-          code = inject(expandChain(!!!list_flatten(unname(code_chain()))))
+          libraries = inject(
+            expandChain(
+              !!!libraries_chain() |>
+                unname() |>
+                list_flatten() |>
+                unique()
+          )),
+          code = inject(
+            expandChain(
+              !!!code_chain() |>
+                unname() |>
+                list_flatten()
+          ))
         ),
         render_args = list(output_format = c("html_document", "pdf_document"))
       )
