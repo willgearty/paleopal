@@ -35,8 +35,11 @@ function(input, output, session) {
   old_vals <- reactiveVal()
 
   # common server functions ####
-  # add a step to the report and workflow
-  add_step <- function(fun_workflow, fun_report, ind) {
+  # add a step to the report, workflow, and the code chain
+  # fun_workflow is the function that generates the UI elements for the workflow
+  # fun_report is the function that generates the UI elements for the report
+  # code_chain_list is a list of quoted code bits that will be added to code_chain()
+  add_step <- function(ind, fun_workflow, fun_report, code_chain_list) {
     # add the UI elements to the workflow
     accordion_panel_insert(".workflow_accordion", panel = fun_workflow(ind))
     accordion_panel_open(".workflow_accordion", values = paste0("step_", ind))
@@ -45,6 +48,11 @@ function(input, output, session) {
     tmp_list <- report_list()
     tmp_list[[paste0("step_", ind)]] <- fun_report(ind)
     report_list(tmp_list)
+
+    # add the code to the code chain
+    tmp_list <- code_chain()
+    tmp_list[[paste0("step_", ind)]] <- code_chain_list
+    code_chain(tmp_list)
 
     # handle removing this step from the report and workflow
     observeEvent(input[[paste0(".remove_step_", ind)]], {

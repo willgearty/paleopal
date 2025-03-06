@@ -29,18 +29,18 @@ observeEvent(input$.add_option_1, {
     )
   })
 
-  # add the UI elements to the workflow and report
-  add_step(test_module_ui_option_1, test_module_report_option_1, ind)
-
-  # add code components to the downloadable markdown
+  # add the UI elements to the workflow, report, and downloadable markdown
   # note that any local variables need to be injected with !!
-  tmp_list <- code_chain()
-  tmp_list[[paste0("step_", ind)]] <- list(
-    inject(quote(invisible(intermediate_list[[paste0("occs_", !!ind)]]()))),
-    quote(c()),
-    inject(quote(output[[paste0("map_", !!ind)]]()))
-  )
-  code_chain(tmp_list)
+  add_step(ind,
+           test_module_ui_option_1, test_module_report_option_1,
+           list(
+             inject(quote(
+               invisible(intermediate_list[[paste0("occs_", !!ind)]]())
+             )),
+             inject(quote(
+               output[[paste0("map_", !!ind)]]()
+             ))
+           ))
 }, ignoreInit = TRUE)
 
 # handle adding the second option
@@ -52,7 +52,8 @@ observeEvent(input$.add_option_2, {
   })
 
   # add the UI elements to the workflow and report
-  add_step(test_module_ui_option_2, test_module_report_option_2, ind)
+  add_step(ind, test_module_ui_option_2, test_module_report_option_2,
+           list(quote("#This is the second step")))
 }, ignoreInit = TRUE)
 
 # handle adding the third option
@@ -64,5 +65,6 @@ observeEvent(input$.add_option_3, {
   })
 
   # add the UI elements to the workflow and report
-  add_step(test_module_ui_option_3, test_module_report_option_3, ind)
+  add_step(ind, test_module_ui_option_3, test_module_report_option_3,
+           list(quote("#This is the third step")))
 }, ignoreInit = TRUE)
