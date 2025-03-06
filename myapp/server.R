@@ -92,14 +92,15 @@ function(input, output, session) {
   output$workflow <- renderUI({
     old_vals(isolate(reactiveValuesToList(input)))
     # TODO: figure out how to maintain which steps are open/expanded
-    accordion(rank_list(labels = workflow_list(), input_id = ".sortable"),
+    accordion(rank_list(labels = workflow_list(),
+                        input_id = ".workflow_sortable"),
               open = isolate(input$.workflow_accordion),
               id = ".workflow_accordion")
   })
 
   # handle workflow reordering
-  observeEvent(input$.sortable, {
-    new_order <- isolate(input$.sortable)
+  observeEvent(input$.workflow_sortable, {
+    new_order <- isolate(input$.workflow_sortable)
     tmp_list <- report_list()
     report_list(tmp_list[new_order])
     tmp_list <- code_chain()

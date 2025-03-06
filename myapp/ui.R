@@ -31,7 +31,7 @@ tagList(
       layout_sidebar(
         layout_column_wrap(
           card(
-            card_header("Workflow Steps"),
+            card_header("Possible Workflow Steps"),
             test_module_ui_main()
           ),
           card(
@@ -41,7 +41,9 @@ tagList(
             sortable_js(".workflow_accordion",
                         options = sortable_options(
                           onSort =
-                            sortable_js_capture_input(input_id = ".sortable")
+                            sortable_js_capture_input(
+                              input_id = ".workflow_sortable"
+                            )
                         ))
           ),
           style = css(grid_template_columns = "1fr 2fr")
