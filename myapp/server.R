@@ -69,10 +69,16 @@ function(input, output, session) {
                       as.numeric(isolate(input$.accordion_version)) + 1)
   }
 
-  # source server.R files ####
-  # source each module's server.R file
-  # make sure local = TRUE so they all share a namespace
-  source("./modules/test_module/server.R", local = TRUE)
+  # source module files ####
+  # load the dynamic bits for each modules (ui-aux.R and server.R)
+  # make sure local = TRUE so they all share a namespace with the main app
+  modules <- list.dirs("./modules/", recursive = FALSE)
+  sapply(modules, FUN = function(module) {
+    ui_aux_file <- file.path(module, "ui-aux.R")
+    if (file.exists(ui_aux_file)) source(ui_aux_file, local = TRUE)
+    server_file <- file.path(module, "server.R")
+    if (file.exists(server_file)) source(server_file, local = TRUE)
+  })
 
   # render dynamic UI ####
   # add libraries to load at the beginning of the report
