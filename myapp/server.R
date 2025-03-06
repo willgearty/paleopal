@@ -72,7 +72,6 @@ function(input, output, session) {
   # source module files ####
   # load the dynamic bits for each modules (ui-aux.R and server.R)
   # make sure local = TRUE so they all share a namespace with the main app
-  modules <- list.dirs("./modules/", recursive = FALSE)
   sapply(modules, FUN = function(module) {
     ui_aux_file <- file.path(module, "ui-aux.R")
     if (file.exists(ui_aux_file)) source(ui_aux_file, local = TRUE)

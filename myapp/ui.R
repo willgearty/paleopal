@@ -16,6 +16,13 @@ tagList(
       HTML(
         "#\\.accordion_version {
           display: none;
+        }
+        #\\.steps_card .accordion .card,
+        #\\.steps_card .accordion .card-body,
+        #\\.steps_card .accordion .card-header {
+          padding: 0;
+          margin: 0;
+          border: 0;
         }"
       )
     )
@@ -31,8 +38,18 @@ tagList(
       layout_sidebar(
         layout_column_wrap(
           card(
+            id = ".steps_card",
             card_header("Possible Workflow Steps"),
-            test_module_ui_main()
+            accordion(
+              !!!lapply(modules, function(module) {
+                if (file.exists(file.path(module, "ui-main.R"))) {
+                  source(file.path(module, "ui-main.R"))$value
+                } else {
+                  NULL
+                }
+              }),
+              open = FALSE
+            )
           ),
           card(
             card_header("Workflow (click and drag to reorder)"),
