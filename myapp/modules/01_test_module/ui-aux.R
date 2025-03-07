@@ -8,7 +8,7 @@ mod01_ui_option_1 <- function(ind) {
   tagList(
     accordion_panel_paleopal(
       ind = ind,
-      "Rule 1: Identify your taxonomic scope",
+      "Download data from the PBDB",
       p("This is the first step"),
       selectInput(paste0("genus_", ind), "Choose a genus:",
                   choices = c("Tyrannosaurus", "Dimetrodon"))

@@ -15,7 +15,7 @@ observeEvent(input$.mod01_add_option_1, {
       pbdb_occurrences(taxon_name = ..(input[[paste0("genus_", ind)]]),
                        vocab = "pbdb", show = "coords")
     }))
-  }, varname = "occs")
+  }, varname = paste0("occs_", ind))
   # make a map of occs with ggplot
   output[[paste0("map_", ind)]] <- metaRender(renderPlot, {
     ggplot(..(intermediate_list[[paste0("occs_", ind)]]()), aes(x = lng, y = lat)) +

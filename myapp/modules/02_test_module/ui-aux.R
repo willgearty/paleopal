@@ -11,10 +11,10 @@ mod02_ui_option_1 <- function(ind) {
   tagList(
     accordion_panel_paleopal(
       ind = ind,
-      "Rule 2: Keep raw data raw",
+      "Filter by a specific column",
       p("This is the second step"),
       selectInput(paste0("dataset_", ind), "Choose a dataset:",
-                  choices = c("mtcars", "iris"))
+                  choices = get_int_dfs())
     )
   )
 }
@@ -24,7 +24,7 @@ mod02_ui_option_2 <- function(ind) {
     accordion_panel_paleopal(
       ind = ind,
       "Step 3",
-      p("This is the third step"),
+      p("Remove duplicate rows"),
       selectInput(paste0("dataset2_", ind), "Choose a dataset:",
                   choices = c("mtcars", "iris"))
     )

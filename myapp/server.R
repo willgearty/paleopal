@@ -30,8 +30,6 @@ function(input, output, session) {
   # unordered, named list of intermediate variables that need to be global for
   # assembly of the markdown file
   intermediate_list <- reactiveValues()
-  # unordered, named list of old values for form elements
-  old_vals <- reactiveVal()
 
   # common server functions ####
   # add a step to the report, workflow, and the code chain
@@ -73,6 +71,13 @@ function(input, output, session) {
     updateTextInput(inputId = ".accordion_version",
                     value =
                       as.numeric(isolate(input$.accordion_version)) + 1)
+  }
+
+  # get the names of all intermediate data.frames
+  get_int_dfs <- function() {
+    Filter(function(el) el() |> is.data.frame(),
+           reactiveValuesToList(intermediate_list)) |>
+      names()
   }
 
   observeEvent(input$.clear_steps, {

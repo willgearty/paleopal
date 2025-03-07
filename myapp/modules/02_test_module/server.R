@@ -14,6 +14,14 @@ observeEvent(input$.mod02_add_option_1, {
   add_step(ind, mod02_ui_option_1, mod02_report_option_1,
            list(quote("#This is the second step")),
            c("dplyr"))
+
+  # choices should always include all intermediate data.frames
+  observe({
+    choices <- get_int_dfs() %||% character(0)
+    # update choices but maintain selected
+    updateSelectInput(session, paste0("dataset_", ind), choices = choices,
+                      selected = isolate(input[[paste0("dataset_", ind)]]))
+  })
 }, ignoreInit = TRUE)
 
 # handle adding the third option
