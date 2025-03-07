@@ -75,6 +75,19 @@ function(input, output, session) {
                       as.numeric(isolate(input$.accordion_version)) + 1)
   }
 
+  observeEvent(input$.clear_steps, {
+    sapply(names(report_list()), function(el) {
+      accordion_panel_remove(".workflow_accordion", target = el)
+    })
+    report_list(tagList())
+    code_chain(list())
+    libraries_chain(list())
+  }, ignoreInit = TRUE)
+
+  observeEvent(input$.close_steps, {
+    accordion_panel_close(".workflow_accordion", values = TRUE)
+  }, ignoreInit = TRUE)
+
   # source module files ####
   # load the dynamic bits for each modules (ui-aux.R and server.R)
   # make sure local = TRUE so they all share a namespace with the main app

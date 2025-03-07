@@ -52,7 +52,16 @@ tagList(
             )
           ),
           card(
-            card_header("Workflow (click and drag to reorder)"),
+            card_header(tagList(
+              "Workflow (click and drag to reorder)",
+              div(
+                actionButton(".close_steps", label = "Collapse all steps",
+                             class = "btn-sm"),
+                actionButton(".clear_steps", label = "Remove all steps",
+                             class = "btn-sm"),
+                class = "btn-group float-end"
+              )
+            )),
             accordion(id = ".workflow_accordion"),
             textInput(".accordion_version", label = NULL, value = "1"),
             sortable_js(".workflow_accordion",
