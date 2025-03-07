@@ -25,8 +25,6 @@ function(input, output, session) {
   # each element may also be a list of quoted code bits that will be flattened
   code_chain <- reactiveVal(list())
 
-  # ordered, named list of elements in the workflow
-  workflow_list <- reactiveVal(tagList())
   # ordered, named list of elements in the report
   report_list <- reactiveVal(tagList())
   # unordered, named list of intermediate variables that need to be global for
@@ -104,16 +102,6 @@ function(input, output, session) {
       verbatimTextOutput("libraries"),
       report_list()
     )
-  })
-
-  # render the workflow
-  output$workflow <- renderUI({
-    old_vals(isolate(reactiveValuesToList(input)))
-    # TODO: figure out how to maintain which steps are open/expanded
-    accordion(rank_list(labels = workflow_list(),
-                        input_id = ".workflow_sortable"),
-              open = isolate(input$.workflow_accordion),
-              id = ".workflow_accordion")
   })
 
   # handle workflow reordering
