@@ -67,6 +67,12 @@ function(input, output, session) {
         tmp_list[[paste0("step_", ind)]] <- NULL
         fun(tmp_list)
       }
+      # remove any intermediate objects for this step
+      for (name in grep(paste0("*_", ind),
+                        names(reactiveValuesToList(intermediate_list)),
+                        value = TRUE)) {
+        intermediate_list[[name]] <- NULL
+      }
     }, ignoreInit = TRUE)
     updateTextInput(inputId = ".accordion_version",
                     value =
@@ -75,8 +81,9 @@ function(input, output, session) {
 
   # get the names of all intermediate data.frames
   get_int_dfs <- function() {
-    Filter(function(el) el() |> is.data.frame(),
-           reactiveValuesToList(intermediate_list)) |>
+    reactiveValuesToList(intermediate_list) |>
+      Filter(f = Negate(is.null)) |>
+      Filter(f = function(el) el() |> is.data.frame()) |>
       names()
   }
 
