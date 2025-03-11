@@ -12,8 +12,10 @@ mod03_ui_option_1 <- function(ind) {
       "Plot data on a map",
       p("This is the second step"),
       select_dataset_input(ind),
-      select_column_input(ind, "Choose a latitude column:"),
-      select_column_input(ind, "Choose a longitude column:")
+      select_column_input(paste0(ind, "_1"), "Choose a longitude column:",
+                          "lng"),
+      select_column_input(paste0(ind, "_2"), "Choose a latitude column:",
+                          "lat")
     )
   )
 }

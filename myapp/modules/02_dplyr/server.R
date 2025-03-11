@@ -35,13 +35,14 @@ observeEvent(input$.mod02_add_option_1, {
     choices <- colnames(isolate(intermediate_list[[df_name]]()))
     # try to preserve the old selected column name
     old_col <- isolate(input[[paste0("column_", ind)]])
-    if (!is.null(old_col) && old_col %in% choices) {
+    if (!is.null(old_col) && as_string(old_col) %in% choices) {
       selected <- old_col
     } else {
       selected <- NULL
     }
-    updateSelectInput(session, paste0("column_", ind), choices = choices,
-                      selected = selected)
+    updateVarSelectInput(session, paste0("column_", ind),
+                         data = isolate(intermediate_list[[df_name]]()),
+                         selected = selected)
   }, ignoreInit = TRUE)
 }, ignoreInit = TRUE)
 

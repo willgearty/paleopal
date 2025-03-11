@@ -8,7 +8,9 @@ observeEvent(input$.mod03_add_option_1, {
 
   # make a map of occs with ggplot
   output[[paste0("map_", ind)]] <- metaRender(renderPlot, {
-    ggplot(..(intermediate_list[[input[[paste0("dataset_", ind)]]]]()), aes(x = lng, y = lat)) +
+    ggplot(..(intermediate_list[[input[[paste0("dataset_", ind)]]]]()),
+           aes(x = !!..(input[[paste0("column_", ind, "_1")]]),
+               y = !!..(input[[paste0("column_", ind, "_2")]]))) +
       borders("world") +
       geom_point(color = "red") +
       coord_sf()
@@ -46,13 +48,14 @@ observeEvent(input$.mod03_add_option_1, {
     choices <- colnames(isolate(intermediate_list[[df_name]]()))
     # try to preserve the old selected column name
     old_col <- isolate(input[[paste0("column_", ind)]])
-    if (!is.null(old_col) && old_col %in% choices) {
+    if (!is.null(old_col) && as_string(old_col) %in% choices) {
       selected <- old_col
     } else {
       selected <- NULL
     }
-    updateSelectInput(session, paste0("column_", ind), choices = choices,
-                      selected = selected)
+    updateVarSelectInput(session, paste0("column_", ind),
+                         data = isolate(intermediate_list[[df_name]]()),
+                         selected = selected)
   }, ignoreInit = TRUE)
 
 }, ignoreInit = TRUE)
