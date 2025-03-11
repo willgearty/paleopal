@@ -101,6 +101,8 @@ function(input, output, session) {
   }, ignoreInit = TRUE)
 
   # source module files ####
+  # source common UI elements first
+  source("ui-common.R", local = TRUE)
   # load the dynamic bits for each modules (ui-aux.R and server.R)
   # make sure local = TRUE so they all share a namespace with the main app
   sapply(modules, FUN = function(module) {

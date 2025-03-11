@@ -8,13 +8,14 @@
 # workflow elements ####
 
 mod02_ui_option_1 <- function(ind) {
+  df_names <- get_int_dfs()
   tagList(
     accordion_panel_paleopal(
       ind = ind,
       "Filter by a specific column",
       p("This is the second step"),
-      selectInput(paste0("dataset_", ind), "Choose a dataset:",
-                  choices = get_int_dfs())
+      select_dataset_input(ind),
+      select_column_input(ind)
     )
   )
 }
@@ -25,8 +26,8 @@ mod02_ui_option_2 <- function(ind) {
       ind = ind,
       "Step 3",
       p("Remove duplicate rows"),
-      selectInput(paste0("dataset2_", ind), "Choose a dataset:",
-                  choices = c("mtcars", "iris"))
+      selectInput(paste0("dataset_", ind), "Choose a dataset:",
+                  choices = get_int_dfs())
     )
   )
 }
