@@ -30,6 +30,21 @@ tagList(
         }
         pre.shiny-text-output {
           white-space: pre-wrap;
+        }
+        .code_wrapper {
+          position: relative;
+          button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            opacity: 0%;
+            transition: all ease 0.5s;
+          }
+        }
+        .code_wrapper:hover {
+          button {
+            opacity: 100%;
+          }
         }"
       )
     )

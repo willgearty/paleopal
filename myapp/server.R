@@ -147,8 +147,23 @@ function(input, output, session) {
   # render the report
   output$report <- renderUI({
     tagList(
-      verbatimTextOutput("libraries"),
+      div(
+        verbatimTextOutput("libraries"),
+        actionButton("copy_libraries", icon("copy")),
+        class = "code_wrapper"
+      ),
       report_list()
+    )
+  })
+  observeEvent(input$copy_libraries, {
+    write_clip(
+      inject(expandChain(
+        !!!libraries_chain() |>
+          unname() |>
+          list_flatten() |>
+          unique()
+      )),
+      allow_non_interactive = TRUE
     )
   })
 

@@ -24,7 +24,7 @@ mod03_ui_option_1 <- function(ind) {
 mod03_report_option_1 <- function(ind) {
   tagList(
     div(
-      verbatimTextOutput(paste0("code_", ind)),
+      verbatimTextOutput_copy(ind),
       plotOutput(paste0("map_", ind))
     )
   )

@@ -18,6 +18,10 @@ observeEvent(input$.mod03_add_option_1, {
   output[[paste0("code_", ind)]] <- renderPrint({
     expandChain(output[[paste0("map_", ind)]]())
   })
+  observeEvent(input[[paste0("copy_", ind)]], {
+    write_clip(expandChain(output[[paste0("map_", ind)]]()),
+               allow_non_interactive = TRUE)
+  })
 
   # add the UI elements to the workflow and report
   add_step(ind, mod03_ui_option_1, mod03_report_option_1,

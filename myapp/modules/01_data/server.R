@@ -19,6 +19,12 @@ observeEvent(input$.mod01_add_option_1, {
   output[[paste0("code_", ind)]] <- renderPrint({
     expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
   })
+  observeEvent(input[[paste0("copy_", ind)]], {
+    write_clip(
+      expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]())),
+      allow_non_interactive = TRUE
+    )
+  })
 
   observeEvent(input[[paste0("df_modal_", ind)]], {
     show_df_modal(ind, paste0("occs_", ind))

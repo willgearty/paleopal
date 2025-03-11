@@ -33,3 +33,14 @@ select_column_input <- function(ind, label = "Choose a column:",
 df_modal_button <- function(ind, text = "View data") {
   actionButton(paste0("df_modal_", ind), text)
 }
+
+# a verbatimTextOutput with a button to copy the code to the clipboard
+# make sure to set up an observer for when the actionButton is clicked
+verbatimTextOutput_copy <- function(ind) {
+  div(
+    verbatimTextOutput(paste0("code_", ind)),
+    actionButton(paste0("copy_", ind), icon("copy")),
+    class = "code_wrapper"
+  )
+}
+

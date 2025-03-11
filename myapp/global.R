@@ -18,6 +18,7 @@ library(bslib)
 library(shinymeta)
 library(sortable)
 library(reactable)
+library(clipr)
 
 # libraries for data handling/viz
 library(dplyr)
