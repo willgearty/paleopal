@@ -104,6 +104,7 @@ function(input, output, session) {
     })
   }
 
+  # observers ####
   observeEvent(input$.clear_steps, {
     sapply(names(report_list()), function(el) {
       accordion_panel_remove(".workflow_accordion", target = el)
@@ -111,6 +112,9 @@ function(input, output, session) {
     report_list(tagList())
     code_chain(list())
     libraries_chain(list())
+    for (name in names(reactiveValuesToList(intermediate_list))) {
+      intermediate_list[[name]] <- NULL
+    }
   }, ignoreInit = TRUE)
 
   observeEvent(input$.close_steps, {
