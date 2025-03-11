@@ -11,7 +11,8 @@ mod01_ui_option_1 <- function(ind) {
       "Download data from the PBDB",
       p("This is the first step"),
       selectInput(paste0("genus_", ind), "Choose a genus:",
-                  choices = c("Tyrannosaurus", "Dimetrodon"))
+                  choices = c("Tyrannosaurus", "Dimetrodon")),
+      df_modal_button(ind)
     )
   )
 }

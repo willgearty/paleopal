@@ -17,6 +17,7 @@ library(fontawesome)
 library(bslib)
 library(shinymeta)
 library(sortable)
+library(reactable)
 
 # libraries for data handling/viz
 library(dplyr)

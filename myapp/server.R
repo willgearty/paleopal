@@ -87,6 +87,23 @@ function(input, output, session) {
       names()
   }
 
+  # show a modal with a reactable data.frame
+  show_df_modal <- function(ind, df_name) {
+    showModal(modalDialog(
+      reactableOutput(paste0("df_", ind)), size = "l", easyClose = TRUE
+    ))
+    output[[paste0("df_", ind)]] <- renderReactable({
+      reactable(isolate(intermediate_list[[df_name]]()),
+                defaultColDef = colDef(
+                  cell = function(value) format(value, nsmall = 1),
+                  align = "center",
+                  minWidth = 150,
+                  headerStyle = list(background = "#f7f7f8", cursor = "pointer")
+                ),
+                defaultPageSize = 25)
+    })
+  }
+
   observeEvent(input$.clear_steps, {
     sapply(names(report_list()), function(el) {
       accordion_panel_remove(".workflow_accordion", target = el)

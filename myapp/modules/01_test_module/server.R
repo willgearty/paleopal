@@ -30,6 +30,10 @@ observeEvent(input$.mod01_add_option_1, {
     )
   })
 
+  observeEvent(input[[paste0("df_modal_", ind)]], {
+    show_df_modal(ind, paste0("occs_", ind))
+  }, ignoreInit = TRUE)
+
   # add the UI elements to the workflow, report, and downloadable markdown
   # note that any local variables need to be injected with !!
   add_step(ind,

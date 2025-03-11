@@ -23,6 +23,10 @@ tagList(
           padding: 0;
           margin: 0;
           border: 0;
+        }
+        .Reactable {
+          max-height: 90vh;
+          max-height: 80dvh;
         }"
       )
     )
