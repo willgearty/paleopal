@@ -27,6 +27,9 @@ tagList(
         .Reactable {
           max-height: 90vh;
           max-height: 80dvh;
+        }
+        pre.shiny-text-output {
+          white-space: pre-wrap;
         }"
       )
     )

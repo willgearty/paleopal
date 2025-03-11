@@ -16,18 +16,8 @@ observeEvent(input$.mod01_add_option_1, {
                        vocab = "pbdb", show = "coords")
     }))
   }, varname = paste0("occs_", ind))
-  # make a map of occs with ggplot
-  output[[paste0("map_", ind)]] <- metaRender(renderPlot, {
-    ggplot(..(intermediate_list[[paste0("occs_", ind)]]()), aes(x = lng, y = lat)) +
-      borders("world") +
-      geom_point(color = "red") +
-      coord_sf()
-  })
   output[[paste0("code_", ind)]] <- renderPrint({
-    expandChain(
-      invisible(intermediate_list[[paste0("occs_", ind)]]()),
-      output[[paste0("map_", ind)]]()
-    )
+    expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
   })
 
   observeEvent(input[[paste0("df_modal_", ind)]], {
@@ -36,15 +26,11 @@ observeEvent(input$.mod01_add_option_1, {
 
   # add the UI elements to the workflow, report, and downloadable markdown
   # note that any local variables need to be injected with !!
-  add_step(ind,
-           mod01_ui_option_1, mod01_report_option_1,
+  add_step(ind, mod01_ui_option_1, mod01_report_option_1,
            list(
              inject(quote(
                invisible(intermediate_list[[paste0("occs_", !!ind)]]())
-             )),
-             inject(quote(
-               output[[paste0("map_", !!ind)]]()
              ))
            ),
-           c("paleobioDB", "ggplot2"))
+           c("paleobioDB"))
 }, ignoreInit = TRUE)
