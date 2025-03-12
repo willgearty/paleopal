@@ -14,7 +14,7 @@ accordion_panel_paleopal <- function(ind, ...) {
 
 # a select input to choose an intermediate dataset
 select_dataset_input <- function(ind, label = "Choose a dataset:") {
-  df_names <- get_int_dfs()
+  df_names <- get_int_dfs(ind)
   # TODO: selected should be the most recent dataset?
   selectInput(paste0("dataset_", ind), label, choices = df_names)
 }
@@ -23,7 +23,7 @@ select_dataset_input <- function(ind, label = "Choose a dataset:") {
 # should be paired with a select_dataset_input
 select_column_input <- function(ind, label = "Choose a column:",
                                 default = NULL) {
-  df_names <- get_int_dfs()
+  df_names <- get_int_dfs(ind)
   varSelectInput(paste0("column_", ind), label,
                  data = intermediate_list[[df_names[[1]]]](),
                  selected = default)

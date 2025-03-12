@@ -17,7 +17,7 @@ observeEvent(input$.mod02_add_option_1, {
 
   # choices should always include all intermediate data.frames
   observe({
-    choices <- get_int_dfs() %||% character(0)
+    choices <- get_int_dfs(ind) %||% character(0)
     # try to preserve the old selected dataset name
     old_df <- isolate(input[[paste0("dataset_", ind)]])
     if (!is.null(old_df) && old_df %in% choices) {

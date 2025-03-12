@@ -8,7 +8,7 @@
 # workflow elements ####
 
 mod02_ui_option_1 <- function(ind) {
-  df_names <- get_int_dfs()
+  df_names <- get_int_dfs(ind)
   tagList(
     accordion_panel_paleopal(
       ind = ind,

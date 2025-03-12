@@ -80,10 +80,11 @@ function(input, output, session) {
   }
 
   # get the names of all intermediate data.frames
-  get_int_dfs <- function() {
-    reactiveValuesToList(intermediate_list) |>
+  get_int_dfs <- function(ind) {
+    lst <- reactiveValuesToList(intermediate_list)
+    lst[!grepl(paste0("_", ind), names(lst))] |>
       Filter(f = Negate(is.null)) |>
-      Filter(f = function(el) el() |> is.data.frame()) |>
+      Filter(f = function(el) is.data.frame(el())) |>
       names()
   }
 
