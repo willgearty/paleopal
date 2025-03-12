@@ -6,13 +6,35 @@
 observeEvent(input$.mod02_add_option_1, {
   ind <- as.numeric(input$.accordion_version)
 
-  output[[paste0("text_", ind)]] <- renderText({
-    "This is the second step"
+  # build reactive expressions for each instance of this component
+  # anything that will be included as code in the report needs to be added to
+  # intermediate list, input, or output (or some other global object)
+  intermediate_list[[paste0("occs_", ind)]] <- metaReactive2({
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]])
+    metaExpr({
+      ..(intermediate_list[[input[[paste0("dataset_", ind)]]]]()) |>
+        filter(!!..(input[[paste0("column_", ind)]]) ==
+                 ..(input[[paste0("text_", ind)]]))
+    })
+  }, varname = paste0("occs_", ind))
+  output[[paste0("code_", ind)]] <- renderPrint({
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]])
+    expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
+  })
+  observeEvent(input[[paste0("copy_", ind)]], {
+   write_clip(
+     expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]())),
+     allow_non_interactive = TRUE
+   )
   })
 
   # add the UI elements to the workflow and report
   add_step(ind, mod02_ui_option_1, mod02_report_option_1,
-           list(quote("#This is the second step")),
+           list(
+             inject(quote(
+               invisible(intermediate_list[[paste0("occs_", !!ind)]]())
+             ))
+           ),
            c("dplyr"))
 
   # choices should always include all intermediate data.frames

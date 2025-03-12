@@ -15,7 +15,8 @@ mod02_ui_option_1 <- function(ind) {
       "Filter by a specific column",
       p("This is the second step"),
       select_dataset_input(ind),
-      select_column_input(ind)
+      select_column_input(ind),
+      textInput(paste0("text_", ind), "Enter a value to filter by:")
     )
   )
 }
@@ -36,7 +37,7 @@ mod02_ui_option_2 <- function(ind) {
 mod02_report_option_1 <- function(ind) {
   tagList(
     div(
-      textOutput(paste0("text_", ind))
+      verbatimTextOutput_copy(ind),
     )
   )
 }
