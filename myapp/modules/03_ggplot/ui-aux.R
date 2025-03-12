@@ -10,7 +10,6 @@ mod03_ui_option_1 <- function(ind) {
     accordion_panel_paleopal(
       ind = ind,
       "Plot data on a map",
-      p("This is the second step"),
       select_dataset_input(ind),
       select_column_input(paste0(ind, "_1"), "Choose a longitude column:",
                           "lng"),
