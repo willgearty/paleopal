@@ -8,6 +8,9 @@ observeEvent(input$.mod03_add_option_1, {
 
   # make a map of occs with ggplot
   output[[paste0("map_", ind)]] <- metaRender(renderPlot, {
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
+        input[[paste0("column_", ind, "_2")]],
+        intermediate_list[[input[[paste0("dataset_", ind)]]]])
     ggplot(..(intermediate_list[[input[[paste0("dataset_", ind)]]]]()),
            aes(x = !!..(input[[paste0("column_", ind, "_1")]]),
                y = !!..(input[[paste0("column_", ind, "_2")]]))) +
@@ -16,6 +19,9 @@ observeEvent(input$.mod03_add_option_1, {
       coord_sf()
   })
   output[[paste0("code_", ind)]] <- renderPrint({
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
+        input[[paste0("column_", ind, "_2")]],
+        intermediate_list[[input[[paste0("dataset_", ind)]]]])
     expandChain(output[[paste0("map_", ind)]]())
   })
   observeEvent(input[[paste0("copy_", ind)]], {

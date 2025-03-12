@@ -11,12 +11,13 @@ observeEvent(input$.mod01_add_option_1, {
   # intermediate list, input, or output (or some other global object)
   intermediate_list[[paste0("occs_", ind)]] <- metaReactive2({
     req(input[[paste0("genus_", ind)]])
-    isolate(metaExpr({
+    metaExpr({
       pbdb_occurrences(taxon_name = ..(input[[paste0("genus_", ind)]]),
                        vocab = "pbdb", show = "coords")
-    }))
+    })
   }, varname = paste0("occs_", ind))
   output[[paste0("code_", ind)]] <- renderPrint({
+    req(input[[paste0("genus_", ind)]])
     expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
   })
   observeEvent(input[[paste0("copy_", ind)]], {
