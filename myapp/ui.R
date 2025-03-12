@@ -85,7 +85,7 @@ tagList(
               )
             )),
             accordion(id = ".workflow_accordion"),
-            textInput(".accordion_version", label = NULL, value = "1"),
+            numericInput(".accordion_version", label = NULL, value = 1),
             sortable_js(".workflow_accordion",
                         options = sortable_options(
                           onSort =

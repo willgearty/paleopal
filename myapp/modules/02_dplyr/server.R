@@ -4,7 +4,7 @@
 
 # handle adding the first option
 observeEvent(input$.mod02_add_option_1, {
-  ind <- as.numeric(input$.accordion_version)
+  ind <- input$.accordion_version
 
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
@@ -73,7 +73,7 @@ observeEvent(input$.mod02_add_option_1, {
 
 # handle adding the second option
 observeEvent(input$.mod02_add_option_2, {
-  ind <- as.numeric(input$.accordion_version)
+  ind <- input$.accordion_version
 
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to

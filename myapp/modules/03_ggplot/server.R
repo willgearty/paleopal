@@ -4,7 +4,7 @@
 
 # handle adding the first option
 observeEvent(input$.mod03_add_option_1, {
-  ind <- as.numeric(input$.accordion_version)
+  ind <- input$.accordion_version
 
   # make a map of occs with ggplot
   output[[paste0("map_", ind)]] <- metaRender(renderPlot, {

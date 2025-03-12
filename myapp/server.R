@@ -74,9 +74,9 @@ function(input, output, session) {
         intermediate_list[[name]] <- NULL
       }
     }, ignoreInit = TRUE)
-    updateTextInput(inputId = ".accordion_version",
-                    value =
-                      as.numeric(isolate(input$.accordion_version)) + 1)
+    updateNumericInput(inputId = ".accordion_version",
+                       value =
+                         isolate(input$.accordion_version) + 1)
   }
 
   # get the names of all intermediate data.frames
@@ -116,6 +116,7 @@ function(input, output, session) {
     for (name in names(reactiveValuesToList(intermediate_list))) {
       intermediate_list[[name]] <- NULL
     }
+    updateNumericInput(inputId = ".accordion_version", value = "1")
   }, ignoreInit = TRUE)
 
   observeEvent(input$.close_steps, {
