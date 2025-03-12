@@ -4,8 +4,10 @@
 # one or more actionButton()s
 
 accordion_panel(
-  title = "Download Data",
+  title = "Add Data",
   card(
-    actionButton(".mod01_add_option_1", "Download data from the PBDB")
+    actionButton(".mod01_add_option_1", "Upload occurrence data"),
+    actionButton(".mod01_add_option_1",
+                 "Download occurrence data from the PBDB")
   )
 )

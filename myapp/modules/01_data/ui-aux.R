@@ -8,8 +8,20 @@ mod01_ui_option_1 <- function(ind) {
   tagList(
     accordion_panel_paleopal(
       ind = ind,
-      "Download data from the PBDB",
-      p("This is the first step"),
+      "Upload occurrence data",
+      fileInput(paste0("file_", ind), "Choose a .csv file:", accept = ".csv"),
+      numericInput(paste0("num_rows_", ind), "Number of rows to skip:",
+                   value = 0, min = 0),
+      df_modal_button(ind)
+    )
+  )
+}
+
+mod01_ui_option_2 <- function(ind) {
+  tagList(
+    accordion_panel_paleopal(
+      ind = ind,
+      "Download occurrence data from the PBDB",
       selectInput(paste0("genus_", ind), "Choose a genus:",
                   choices = c("Tyrannosaurus", "Dimetrodon")),
       df_modal_button(ind)
@@ -19,6 +31,14 @@ mod01_ui_option_1 <- function(ind) {
 
 # report elements ####
 mod01_report_option_1 <- function(ind) {
+  tagList(
+    div(
+      verbatimTextOutput_copy(ind)
+    )
+  )
+}
+
+mod01_report_option_2 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind)
