@@ -16,9 +16,11 @@ observeEvent(input$.mod02_add_option_1, {
         distinct()
     })
   }, varname = paste0("occs_", ind))
-  output[[paste0("code_", ind)]] <- renderPrint({
+  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("dataset_", ind)]])
-    expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
+    metaExpr({
+      expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
+    })
   })
   observeEvent(input[[paste0("copy_", ind)]], {
     write_clip(
@@ -86,9 +88,11 @@ observeEvent(input$.mod02_add_option_2, {
                  ..(input[[paste0("text_", ind)]]))
     })
   }, varname = paste0("occs_", ind))
-  output[[paste0("code_", ind)]] <- renderPrint({
+  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]])
-    expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
+    metaExpr({
+      expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
+    })
   })
   observeEvent(input[[paste0("copy_", ind)]], {
    write_clip(

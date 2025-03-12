@@ -7,22 +7,26 @@ observeEvent(input$.mod03_add_option_1, {
   ind <- input$.accordion_version
 
   # make a map of occs with ggplot
-  output[[paste0("map_", ind)]] <- metaRender(renderPlot, {
+  output[[paste0("map_", ind)]] <- metaRender2(renderPlot, {
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         intermediate_list[[input[[paste0("dataset_", ind)]]]])
-    ggplot(..(intermediate_list[[input[[paste0("dataset_", ind)]]]]()),
-           aes(x = !!..(input[[paste0("column_", ind, "_1")]]),
-               y = !!..(input[[paste0("column_", ind, "_2")]]))) +
-      borders("world") +
-      geom_point(color = "red") +
-      coord_sf()
+    metaExpr({
+      ggplot(..(intermediate_list[[input[[paste0("dataset_", ind)]]]]()),
+             aes(x = !!..(input[[paste0("column_", ind, "_1")]]),
+                 y = !!..(input[[paste0("column_", ind, "_2")]]))) +
+        borders("world") +
+        geom_point(color = "red") +
+        coord_sf()
+    })
   })
-  output[[paste0("code_", ind)]] <- renderPrint({
+  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         intermediate_list[[input[[paste0("dataset_", ind)]]]])
-    expandChain(output[[paste0("map_", ind)]]())
+    metaExpr({
+      expandChain(output[[paste0("map_", ind)]]())
+    })
   })
   observeEvent(input[[paste0("copy_", ind)]], {
     write_clip(expandChain(output[[paste0("map_", ind)]]()),

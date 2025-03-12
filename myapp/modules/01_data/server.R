@@ -18,7 +18,7 @@ observeEvent(input$.mod01_add_option_1, {
       read.csv(..(file$datapath), skip = ..(input[[paste0("num_rows_", ind)]]))
     })
   }, varname = paste0("occs_", ind))
-  output[[paste0("code_", ind)]] <- renderPrint({
+  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("file_", ind)]])
     ec <- newExpansionContext()
     ec$substituteMetaReactive(
@@ -28,8 +28,10 @@ observeEvent(input$.mod01_add_option_1, {
                           skip = ..(input[[paste0("num_rows_", ind)]])))
       }
     )
-    expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()),
-                .expansionContext = ec)
+    metaExpr({
+      expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()),
+                  .expansionContext = ec)
+    })
   })
   observeEvent(input[[paste0("copy_", ind)]], {
     write_clip(
@@ -68,9 +70,11 @@ observeEvent(input$.mod01_add_option_2, {
                        vocab = "pbdb", show = "coords")
     })
   }, varname = paste0("occs_", ind))
-  output[[paste0("code_", ind)]] <- renderPrint({
+  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("genus_", ind)]])
-    expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
+    metaExpr({
+      expandChain(invisible(intermediate_list[[paste0("occs_", ind)]]()))
+    })
   })
   observeEvent(input[[paste0("copy_", ind)]], {
     write_clip(
