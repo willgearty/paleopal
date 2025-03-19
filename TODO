@@ -31,3 +31,27 @@
   - drag-and-drop? or some other way to pick and choose workflow (including order)
     - https://rstudio.github.io/sortable/articles/cloning.html
 
+  - resizable sidebar
+    - https://split.js.org/#/split-grid
+    - https://github.com/nathancahill/split/tree/master/packages/split-grid
+
+  - can use session$rootScope to access the input and output objects of the entire app?
+    - but probably not the custom objects like intermediate_list
+
+  - prevent removal of steps with dependencies?
+  - base pipe vs magrittr pipe? (base pipe converts to non-piped code)
+
+TODO:
+- option to upload custom data (done)
+  - need to include uploaded files in buildRmdBundle somehow...
+  - still showing full file path in the code
+- icons for buttons?
+
+BUGS:
+- plot option duplicates download code
+  - I tried using a common expansionContext, but that breaks lots of the code chunks (e.g., pbdb download code disappears when changing genus)
+  - may need to use ec$substituteMetaReactive()
+  - https://github.com/rstudio/shinymeta/issues/126
+- !!as.symbol in the ggplot code: https://github.com/rstudio/shinymeta/issues/125
+- warnings from removing intermediate_list items
+  - req() seems to make this better (maybe play around with cancelOutput arg?)
