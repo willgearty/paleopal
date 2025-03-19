@@ -19,7 +19,7 @@ observeEvent(input$.mod01_add_option_1, {
     })
   }, varname = paste0("occs_", ind))
   output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
-    req(input[[paste0("file_", ind)]])
+    req(input[[paste0("file_", ind)]], input[[paste0("num_rows_", ind)]])
     ec <- newExpansionContext()
     ec$substituteMetaReactive(
       intermediate_list[[paste0("occs_", ind)]],
