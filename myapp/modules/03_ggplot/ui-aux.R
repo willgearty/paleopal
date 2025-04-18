@@ -7,7 +7,7 @@
 mod03_ui_option_1 <- function(ind) {
   df_names <- get_int_dfs(ind)
   tagList(
-    accordion_panel_paleopal(
+    accordion_panel_remove_button(
       ind = ind,
       "Plot data on a map",
       select_dataset_input(ind),

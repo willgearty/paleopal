@@ -6,7 +6,7 @@
 # workflow elements ####
 mod01_ui_option_1 <- function(ind) {
   tagList(
-    accordion_panel_paleopal(
+    accordion_panel_remove_button(
       ind = ind,
       "Upload occurrence data",
       fileInput(paste0("file_", ind), "Choose a .csv file:", accept = ".csv"),
@@ -19,7 +19,7 @@ mod01_ui_option_1 <- function(ind) {
 
 mod01_ui_option_2 <- function(ind) {
   tagList(
-    accordion_panel_paleopal(
+    accordion_panel_remove_button(
       ind = ind,
       "Download occurrence data from the PBDB",
       selectInput(paste0("genus_", ind), "Choose a genus:",

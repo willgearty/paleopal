@@ -9,7 +9,7 @@
 mod02_ui_option_1 <- function(ind) {
   df_names <- get_int_dfs(ind)
   tagList(
-    accordion_panel_paleopal(
+    accordion_panel_remove_button(
       ind = ind,
       "Remove duplicate rows",
       select_dataset_input(ind),
@@ -21,7 +21,7 @@ mod02_ui_option_1 <- function(ind) {
 mod02_ui_option_2 <- function(ind) {
   df_names <- get_int_dfs(ind)
   tagList(
-    accordion_panel_paleopal(
+    accordion_panel_remove_button(
       ind = ind,
       "Filter by a specific column",
       select_dataset_input(ind),
