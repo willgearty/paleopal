@@ -25,13 +25,13 @@ observeEvent(input$.mod03_add_option_1, {
         input[[paste0("column_", ind, "_2")]],
         get_int_data(input[[paste0("dataset_", ind)]]))
     metaExpr({
-      expandChain(output[[paste0("map_", ind)]]())
+      expandChain_shared(output[[paste0("map_", ind)]]())
     })
   })
 
   clip_observe(input, ind,
                expr(
-                 expandChain(output[[paste0("map_", ind)]]())
+                 expandChain_shared(output[[paste0("map_", ind)]]())
                ))
 
   # add the UI elements to the workflow and report

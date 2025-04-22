@@ -24,25 +24,17 @@ observeEvent(input$.mod01_add_option_1, {
 
   output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("file_", ind)]], input[[paste0("num_rows_", ind)]])
-    ec <- newExpansionContext()
-    ec$substituteMetaReactive(
-      get_int_data(paste0("occs_", ind)),
-      function() {
-        metaExpr(read.csv(..(input[[paste0("file_", ind)]]$name),
-                          skip = ..(input[[paste0("num_rows_", ind)]])))
-      }
-    )
     metaExpr({
-      expandChain(invisible(get_int_data(paste0("occs_", ind))()),
-                  .expansionContext = ec)
+      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
     })
   })
 
-  # TODO: fix this to use substituteMetaReactive
-  clip_observe(input, ind,
-               expr(
-                 expandChain(invisible(get_int_data(paste0("occs_", ind))()))
-               ))
+  clip_observe(
+    input, ind,
+    expr(
+      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
+    )
+  )
 
   df_modal_observe(input, output, ind, paste0("occs_", ind))
 
@@ -55,7 +47,12 @@ observeEvent(input$.mod01_add_option_1, {
         invisible(get_int_data(paste0("occs_", !!ind))())
       ))
     ),
-    c()
+    c(),
+    list(get_int_data(paste0("occs_", ind)),
+         function() {
+           metaExpr(read.csv(..(input[[paste0("file_", ind)]]$name),
+                             skip = ..(input[[paste0("num_rows_", ind)]])))
+         })
   )
 }, ignoreInit = TRUE)
 
@@ -80,14 +77,16 @@ observeEvent(input$.mod01_add_option_2, {
   output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("genus_", ind)]])
     metaExpr({
-      expandChain(invisible(get_int_data(paste0("occs_", ind))()))
+      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
     })
   })
 
-  clip_observe(input, ind,
-               expr(
-                 expandChain(invisible(get_int_data(paste0("occs_", ind))()))
-               ))
+  clip_observe(
+    input, ind,
+    expr(
+      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
+    )
+  )
 
   df_modal_observe(input, output, ind, paste0("occs_", ind))
 

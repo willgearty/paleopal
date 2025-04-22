@@ -4,7 +4,15 @@
 \alias{add_shinypal_step}
 \title{Add a step to the report, workflow, and the code chain}
 \usage{
-add_shinypal_step(input, ind, fun_workflow, fun_report, code_chain_list, libs)
+add_shinypal_step(
+  input,
+  ind,
+  fun_workflow,
+  fun_report,
+  code_chain_list,
+  libs,
+  ec_subs = NULL
+)
 }
 \arguments{
 \item{input}{The input object from the shiny app.}
@@ -20,6 +28,10 @@ workflow.}
 code_chain().}
 
 \item{libs}{A character vector of R packages required for this step.}
+
+\item{ec_subs}{An optional list of length 2, where the first element is a
+metaReactive object and the second element is a callback function. This is
+used to substitute expansion contexts in the code chain.}
 }
 \description{
 A short description...

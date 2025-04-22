@@ -31,9 +31,13 @@ shinypal_setup <- function(input, output, session, modules,
 
   # ordered, named list of elements in the report
   shinypal_env$report_list <- reactiveVal(tagList())
+
   # unordered, named list of intermediate variables that need to be global for
   # assembly of the markdown file
   shinypal_env$intermediate_list <- reactiveValues()
+
+  # ordered, named list of expansionContext substitutions
+  shinypal_env$ec_subs <- reactiveVal(list())
 
   # render dynamic UI ####
   # add libraries to load at the beginning of the report
@@ -96,7 +100,7 @@ shinypal_setup <- function(input, output, session, modules,
                 unique()
             )),
           code = inject(
-            expandChain(
+            expandChain_shared(
               !!!shinypal_env$code_chain() |>
                 unname() |>
                 list_flatten()
@@ -112,13 +116,7 @@ shinypal_setup <- function(input, output, session, modules,
     sapply(names(shinypal_env$report_list()), function(el) {
       accordion_panel_remove(".workflow_accordion", target = el)
     })
-    shinypal_env$report_list(tagList())
-    shinypal_env$code_chain(list())
-    shinypal_env$libraries_chain(list())
-    for (name in names(reactiveValuesToList(shinypal_env$intermediate_list))) {
-      shinypal_env$intermediate_list[[name]] <- NULL
-    }
-    updateNumericInput(inputId = ".accordion_version", value = "1")
+    clear_workflow()
   }, ignoreInit = TRUE)
 
   observeEvent(input$.close_steps, {
@@ -133,6 +131,16 @@ shinypal_setup <- function(input, output, session, modules,
     server_file <- file.path(module, "server.R")
     if (file.exists(server_file)) source(server_file, local = TRUE)
   })
+
+  observe({
+    # observe any changes
+    inp <- reactiveValuesToList(input)
+    # reset the expansion context and add substitutes
+    shinypal_env$shared_ec <- newExpansionContext()
+    for(ec_sub in shinypal_env$ec_subs()) {
+      inject(shinypal_env$shared_ec$substituteMetaReactive(!!!ec_sub))
+    }
+  }, priority = 10000)
 
   shinypal_env$setup <- TRUE
 }

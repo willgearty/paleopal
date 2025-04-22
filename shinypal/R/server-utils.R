@@ -145,3 +145,14 @@ get_int_data <- function(name) {
   req(name)
   shinypal_env$intermediate_list[[name]]
 }
+
+clear_workflow <- function() {
+  check_setup()
+  shinypal_env$report_list(tagList())
+  shinypal_env$code_chain(list())
+  shinypal_env$libraries_chain(list())
+  for (name in names(reactiveValuesToList(shinypal_env$intermediate_list))) {
+    shinypal_env$intermediate_list[[name]] <- NULL
+  }
+  updateNumericInput(inputId = ".accordion_version", value = "1")
+}
