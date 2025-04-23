@@ -100,6 +100,11 @@ shinypal_setup <- function(input, output, session, modules,
   output$download_script <- downloadHandler(
     filename = download_filename,
     content = function(file) {
+      # make a new expansion context for the report with all the substitutions
+      ec <- newExpansionContext()
+      for(ec_sub in shinypal_env$ec_subs()) {
+        inject(ec$substituteMetaReactive(!!!ec_sub))
+      }
       buildRmdBundle(
         download_template,
         file,
@@ -116,7 +121,8 @@ shinypal_setup <- function(input, output, session, modules,
             expandChain(
               !!!shinypal_env$code_chain() |>
                 unname() |>
-                list_flatten()
+                list_flatten(),
+              .expansionContext = ec
             ))
         ),
         include_files = reactiveValuesToList(shinypal_env$include_files),
