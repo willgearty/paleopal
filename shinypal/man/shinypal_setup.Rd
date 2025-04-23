@@ -9,7 +9,8 @@ shinypal_setup(
   output,
   session,
   modules,
-  download_filename = "shinypal_script.zip"
+  download_filename = "shinypal_script.zip",
+  download_template = "./modules/test_report.qmd"
 )
 }
 \arguments{

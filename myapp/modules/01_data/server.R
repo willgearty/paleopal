@@ -29,6 +29,13 @@ observeEvent(input$.mod01_add_option_1, {
     })
   })
 
+  # TODO: this can probably be a shinypal function with input and ID as args
+  observeEvent(input[[paste0("file_", ind)]], {
+    # TODO: remove the old file
+    include_file(input[[paste0("file_", ind)]]$datapath,
+                 input[[paste0("file_", ind)]]$name)
+  }, ignoreInit = TRUE)
+
   clip_observe(
     input, ind,
     expr(

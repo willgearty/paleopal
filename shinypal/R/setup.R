@@ -13,9 +13,19 @@
 #' @param session The shiny session object.
 #' @param modules A character vector of paths to independent modules.
 #' @param accordion_id The ID of the accordion element.
+#' @importFrom shinymeta newExpansionContext expandChain buildRmdBundle
+#' @importFrom shiny reactiveVal reactiveValues reactiveValuesToList
+#' @importFrom shiny verbatimTextOutput renderUI renderPrint observeEvent
+#' @importFrom shiny downloadHandler actionButton icon
+#' @importFrom bslib accordion_panel_remove accordion_panel_close
+#' @importFrom purrr list_flatten
+#' @importFrom clipr write_clip
+#' @importFrom rlang inject !!!
+#' @importFrom htmltools div tagList
 #' @export
 shinypal_setup <- function(input, output, session, modules,
-                           download_filename = "shinypal_script.zip") {
+                           download_filename = "shinypal_script.zip",
+                           download_template = "./modules/test_report.qmd") {
   # shared server objects ####
   # a shared expansion context for all expandChain() calls
   shinypal_env$shared_ec <- newExpansionContext()
@@ -38,6 +48,9 @@ shinypal_setup <- function(input, output, session, modules,
 
   # ordered, named list of expansionContext substitutions
   shinypal_env$ec_subs <- reactiveVal(list())
+
+  # unordered, named list of files to include in the download bundle
+  shinypal_env$include_files <- reactiveValues()
 
   # render dynamic UI ####
   # add libraries to load at the beginning of the report
@@ -88,7 +101,7 @@ shinypal_setup <- function(input, output, session, modules,
     filename = download_filename,
     content = function(file) {
       buildRmdBundle(
-        "./modules/test_report.qmd",
+        download_template,
         file,
         vars = list(
           # lists of quoted code bits, need to be injected into expandChain()
@@ -100,12 +113,13 @@ shinypal_setup <- function(input, output, session, modules,
                 unique()
             )),
           code = inject(
-            expandChain_shared(
+            expandChain(
               !!!shinypal_env$code_chain() |>
                 unname() |>
                 list_flatten()
             ))
         ),
+        include_files = reactiveValuesToList(shinypal_env$include_files),
         render_args = list(output_format = c("html_document", "pdf_document"))
       )
     }

@@ -9,7 +9,8 @@ Depends:
     rlang,
     sortable,
     htmltools,
-    clipr
+    clipr,
+    purrr
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
 Description: What the package does (one paragraph).

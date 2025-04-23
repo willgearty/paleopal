@@ -146,13 +146,29 @@ get_int_data <- function(name) {
   shinypal_env$intermediate_list[[name]]
 }
 
+#' @title Set an file to include in the download bundle
+#' @param path A path to a file to include in the download bundle.
+#' @param name A name to store the file as. This should correspond to the name
+#'   of the file in the code.
+#' @importFrom shiny req
+#' @export
+include_file <- function(path, name) {
+  check_setup()
+  req(path, name)
+  shinypal_env$include_files[[name]] <- path
+}
+
 clear_workflow <- function() {
   check_setup()
   shinypal_env$report_list(tagList())
   shinypal_env$code_chain(list())
   shinypal_env$libraries_chain(list())
+  shinypal_env$ec_subs(list())
   for (name in names(reactiveValuesToList(shinypal_env$intermediate_list))) {
     shinypal_env$intermediate_list[[name]] <- NULL
+  }
+  for (name in names(reactiveValuesToList(shinypal_env$include_files))) {
+    shinypal_env$include_files[[name]] <- NULL
   }
   updateNumericInput(inputId = ".accordion_version", value = "1")
 }
