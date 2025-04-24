@@ -114,6 +114,22 @@ clip_observe <- function(input, ind, code_expr) {
   })
 }
 
+#' @title Observe a file input to be included in the download bundle
+#' @param input The shiny input object.
+#' @param inputId The id of the [shiny::fileInput()] object.
+#'   of the file in the code.
+#' @importFrom shiny observeEvent isolate
+#' @importFrom rlang inject set_names
+#' @export
+file_observe <- function(input, inputId) {
+  check_setup()
+  observeEvent(input[[inputId]], {
+    file_obj <- isolate(input[[inputId]])
+    shinypal_env$include_files[[inputId]] <-
+      set_names(list(file_obj$datapath), file_obj$name)
+  }, ignoreInit = TRUE)
+}
+
 #' @title Expand code objects with a shared context
 #' @description
 #'   A wrapper for [shinymeta::expandChain()] that uses a shared expansion
@@ -144,18 +160,6 @@ get_int_data <- function(name) {
   check_setup()
   req(name)
   shinypal_env$intermediate_list[[name]]
-}
-
-#' @title Set an file to include in the download bundle
-#' @param path A path to a file to include in the download bundle.
-#' @param name A name to store the file as. This should correspond to the name
-#'   of the file in the code.
-#' @importFrom shiny req
-#' @export
-include_file <- function(path, name) {
-  check_setup()
-  req(path, name)
-  shinypal_env$include_files[[name]] <- path
 }
 
 clear_workflow <- function() {
