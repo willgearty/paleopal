@@ -6,6 +6,8 @@
 accordion_panel(
   title = "Data Visualization",
   card(
-    actionButton(".mod03_add_option_1", "Plot data on a map")
+    actionButton(".mod03_add_option_1",
+                 HTML(paste(icon("map", class = "fa-solid"),
+                            "Plot data on a map")))
   )
 )

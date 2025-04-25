@@ -6,7 +6,10 @@
 accordion_panel(
   title = "Clean Data",
   card(
-    actionButton(".mod02_add_option_1", "Remove duplicate rows"),
-    actionButton(".mod02_add_option_2", "Filter by a specific column")
+    actionButton(".mod02_add_option_1",
+                 HTML(paste(icon("copy", class = "fa-solid"),
+                            "Remove duplicate rows"))),
+    actionButton(".mod02_add_option_2",
+                 HTML(paste(icon("filter"), "Filter by a specific column")))
   )
 )
