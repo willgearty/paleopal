@@ -9,7 +9,7 @@ mod01_ui_option_1 <- function(ind) {
     accordion_panel_remove_button(
       ind = ind,
       "Upload occurrence data",
-      fileInput(paste0("file_", ind), "Choose a .csv file:", accept = ".csv"),
+      fileInput(paste0("file1_", ind), "Choose a .csv file:", accept = ".csv"),
       numericInput(paste0("num_rows_", ind), "Number of rows to skip:",
                    value = 0, min = 0),
       df_modal_button(ind)

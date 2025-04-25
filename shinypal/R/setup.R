@@ -127,6 +127,7 @@ shinypal_setup <- function(input, output, session, modules,
         ),
         include_files = reactiveValuesToList(shinypal_env$include_files) |>
           unname() |>
+          Filter(f = Negate(is.null)) |>
           list_flatten(),
         render_args = list(output_format = c("html_document", "pdf_document"))
       )

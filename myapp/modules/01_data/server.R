@@ -11,8 +11,8 @@ observeEvent(input$.mod01_add_option_1, {
   # intermediate list, input, or output (or some other global object)
   set_int_data(
     metaReactive2({
-      req(input[[paste0("file_", ind)]], input[[paste0("num_rows_", ind)]])
-      file <- input[[paste0("file_", ind)]]
+      req(input[[paste0("file1_", ind)]], input[[paste0("num_rows_", ind)]])
+      file <- input[[paste0("file1_", ind)]]
       ext <- tools::file_ext(file$datapath)
       validate(need(ext == "csv", "Please upload a csv file"))
       metaExpr({
@@ -23,13 +23,13 @@ observeEvent(input$.mod01_add_option_1, {
   )
 
   output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
-    req(input[[paste0("file_", ind)]], input[[paste0("num_rows_", ind)]])
+    req(input[[paste0("file1_", ind)]], input[[paste0("num_rows_", ind)]])
     metaExpr({
       expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
     })
   })
 
-  file_observe(input, paste0("file_", ind))
+  file_observe(input, paste0("file1_", ind))
 
   clip_observe(
     input, output, ind,
@@ -52,7 +52,7 @@ observeEvent(input$.mod01_add_option_1, {
     c(),
     list(get_int_data(paste0("occs_", ind)),
          function() {
-           metaExpr(read.csv(..(input[[paste0("file_", ind)]]$name),
+           metaExpr(read.csv(..(input[[paste0("file1_", ind)]]$name),
                              skip = ..(input[[paste0("num_rows_", ind)]])))
          })
   )

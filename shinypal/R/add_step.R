@@ -85,7 +85,13 @@ add_shinypal_step <- function(input, ind, fun_workflow, fun_report,
                       value = TRUE)) {
       shinypal_env$intermediate_list[[name]] <- NULL
     }
-    # TODO: remove files?
+    # remove included files
+    for (name in grep(paste0("*_", ind),
+                      names(reactiveValuesToList(shinypal_env$include_files)),
+                      value = TRUE)) {
+      shinypal_env$include_files[[name]] <- NULL
+    }
+    # if there are no steps left, clear the workflow as a final precaution
     if (length(shinypal_env$report_list()) == 0) {
       clear_workflow()
     }
