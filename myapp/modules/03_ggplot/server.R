@@ -29,7 +29,7 @@ observeEvent(input$.mod03_add_option_1, {
     })
   })
 
-  clip_observe(input, ind,
+  clip_observe(input, output, ind,
                expr(
                  expandChain_shared(output[[paste0("map_", ind)]]())
                ))

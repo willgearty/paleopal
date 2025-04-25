@@ -32,7 +32,7 @@ observeEvent(input$.mod01_add_option_1, {
   file_observe(input, paste0("file_", ind))
 
   clip_observe(
-    input, ind,
+    input, output, ind,
     expr(
       expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
     )
@@ -84,7 +84,7 @@ observeEvent(input$.mod01_add_option_2, {
   })
 
   clip_observe(
-    input, ind,
+    input, output, ind,
     expr(
       expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
     )
