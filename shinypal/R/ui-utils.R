@@ -10,7 +10,7 @@ accordion_panel_remove_button <- function(ind, ...) {
   req(ind)
   tmp <- accordion_panel(
     ...,
-    actionButton(paste0(".remove_step_", ind), "Remove this step"),
+    actionButton(paste0("remove_step_", ind), "Remove this step"),
     value = paste0("step_", ind)
   )
   # need this attribute for sortable_js_capture_input

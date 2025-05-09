@@ -87,8 +87,8 @@ shinypal_setup <- function(input, output, session, modules,
   })
 
   # handle workflow reordering
-  observeEvent(input$.workflow_sortable, {
-    new_order <- isolate(input$.workflow_sortable)
+  observeEvent(input$workflow_sortable, {
+    new_order <- isolate(input$workflow_sortable)
     tmp_list <- shinypal_env$report_list()
     shinypal_env$report_list(tmp_list[new_order])
     tmp_list <- shinypal_env$code_chain()
@@ -135,15 +135,15 @@ shinypal_setup <- function(input, output, session, modules,
   )
 
   # observers ####
-  observeEvent(input$.clear_steps, {
+  observeEvent(input$clear_steps, {
     sapply(names(shinypal_env$report_list()), function(el) {
-      accordion_panel_remove(".workflow_accordion", target = el)
+      accordion_panel_remove("workflow_accordion", target = el)
     })
     clear_workflow()
   }, ignoreInit = TRUE)
 
-  observeEvent(input$.close_steps, {
-    accordion_panel_close(".workflow_accordion", values = TRUE)
+  observeEvent(input$close_steps, {
+    accordion_panel_close("workflow_accordion", values = TRUE)
   }, ignoreInit = TRUE)
 
   # load the dynamic bits for each module (ui-aux.R and server.R)

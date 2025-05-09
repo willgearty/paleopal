@@ -14,12 +14,12 @@ tagList(
   tags$head(
     tags$style(
       HTML(
-        "#\\.accordion_version {
+        "#accordion_version {
           display: none;
         }
-        #\\.steps_card .accordion .card,
-        #\\.steps_card .accordion .card-body,
-        #\\.steps_card .accordion .card-header {
+        #steps_card .accordion .card,
+        #steps_card .accordion .card-body,
+        #steps_card .accordion .card-header {
           padding: 0;
           margin: 0;
           border: 0;

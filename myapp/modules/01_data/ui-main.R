@@ -6,9 +6,9 @@
 accordion_panel(
   title = "Add Data",
   card(
-    actionButton(".mod01_add_option_1",
+    actionButton("mod01_add_option_1",
                  HTML(paste(icon("upload"), "Upload occurrence data"))),
-    actionButton(".mod01_add_option_2",
+    actionButton("mod01_add_option_2",
                  HTML(paste(icon("download"),
                             "Download occurrence data from the PBDB")))
   )

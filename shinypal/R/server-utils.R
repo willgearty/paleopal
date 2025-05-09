@@ -175,5 +175,5 @@ clear_workflow <- function() {
   for (name in names(reactiveValuesToList(shinypal_env$include_files))) {
     shinypal_env$include_files[[name]] <- NULL
   }
-  updateNumericInput(inputId = ".accordion_version", value = "1")
+  updateNumericInput(inputId = "accordion_version", value = "1")
 }

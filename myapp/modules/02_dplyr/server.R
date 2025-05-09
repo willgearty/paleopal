@@ -3,8 +3,8 @@
 # and setting up listeners
 
 # handle adding the first option
-observeEvent(input$.mod02_add_option_1, {
-  ind <- input$.accordion_version
+observeEvent(input$mod02_add_option_1, {
+  ind <- input$accordion_version
 
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
@@ -51,8 +51,8 @@ observeEvent(input$.mod02_add_option_1, {
 }, ignoreInit = TRUE)
 
 # handle adding the second option
-observeEvent(input$.mod02_add_option_2, {
-  ind <- input$.accordion_version
+observeEvent(input$mod02_add_option_2, {
+  ind <- input$accordion_version
 
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to

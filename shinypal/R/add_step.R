@@ -26,8 +26,8 @@ add_shinypal_step <- function(input, ind, fun_workflow, fun_report,
   #req(input, ind, fun_workflow, fun_report, code_chain_list, libs)
 
   # add the UI elements to the workflow
-  accordion_panel_insert(".workflow_accordion", panel = fun_workflow(ind))
-  accordion_panel_open(".workflow_accordion", values = paste0("step_", ind))
+  accordion_panel_insert("workflow_accordion", panel = fun_workflow(ind))
+  accordion_panel_open("workflow_accordion", values = paste0("step_", ind))
 
   # add the UI elements to the report
   tmp_list <- shinypal_env$report_list()
@@ -66,8 +66,8 @@ add_shinypal_step <- function(input, ind, fun_workflow, fun_report,
   }
 
   # handle removing this step from the report and workflow
-  observeEvent(input[[paste0(".remove_step_", ind)]], {
-    accordion_panel_remove(".workflow_accordion",
+  observeEvent(input[[paste0("remove_step_", ind)]], {
+    accordion_panel_remove("workflow_accordion",
                            target = paste0("step_", ind))
     for (fun in c(shinypal_env$report_list,
                   shinypal_env$code_chain,
@@ -96,7 +96,7 @@ add_shinypal_step <- function(input, ind, fun_workflow, fun_report,
       clear_workflow()
     }
   }, ignoreInit = TRUE)
-  updateNumericInput(inputId = ".accordion_version",
+  updateNumericInput(inputId = "accordion_version",
                      value =
-                       isolate(input$.accordion_version) + 1)
+                       isolate(input$accordion_version) + 1)
 }
