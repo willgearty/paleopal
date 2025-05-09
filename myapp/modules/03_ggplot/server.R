@@ -11,6 +11,11 @@ observeEvent(input$mod03_add_option_1, {
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         get_int_data(input[[paste0("dataset_", ind)]]))
+    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    req(df[[input[[paste0("column_", ind, "_1")]]]],
+        df[[input[[paste0("column_", ind, "_2")]]]])
+    req(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
+        is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]))
     metaExpr({
       ggplot(..(get_int_data(input[[paste0("dataset_", ind)]])()),
              aes(x = !!..(input[[paste0("column_", ind, "_1")]]),
@@ -24,6 +29,11 @@ observeEvent(input$mod03_add_option_1, {
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         get_int_data(input[[paste0("dataset_", ind)]]))
+    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
+                  "Longitude column must be numeric"),
+             need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
+                  "Latitude column must be numeric"))
     metaExpr({
       expandChain_shared(output[[paste0("map_", ind)]]())
     })

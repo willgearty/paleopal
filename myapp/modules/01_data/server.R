@@ -15,8 +15,11 @@ observeEvent(input$mod01_add_option_1, {
       file <- input[[paste0("file1_", ind)]]
       ext <- tools::file_ext(file$datapath)
       validate(need(ext == "csv", "Please upload a csv file"))
+      validate(need(input[[paste0("num_rows_", ind)]] >= 0,
+                    "Number of rows must be greater than or equal to 0"))
       metaExpr({
-        read.csv(..(file$datapath), skip = ..(input[[paste0("num_rows_", ind)]]))
+        read.csv(..(file$datapath),
+                 skip = ..(input[[paste0("num_rows_", ind)]]))
       })
     }, varname = paste0("occs_", ind)),
     paste0("occs_", ind)
@@ -52,7 +55,14 @@ observeEvent(input$mod01_add_option_1, {
     c(),
     list(get_int_data(paste0("occs_", ind)),
          function() {
-           metaExpr(read.csv(..(input[[paste0("file1_", ind)]]$name),
+           req(input[[paste0("file1_", ind)]],
+               input[[paste0("num_rows_", ind)]])
+           file <- input[[paste0("file1_", ind)]]
+           ext <- tools::file_ext(file$datapath)
+           validate(need(ext == "csv", "Please upload a csv file"))
+           validate(need(input[[paste0("num_rows_", ind)]] >= 0,
+                         "Number of rows must be greater than or equal to 0"))
+           metaExpr(read.csv(..(file$name),
                              skip = ..(input[[paste0("num_rows_", ind)]])))
          })
   )
