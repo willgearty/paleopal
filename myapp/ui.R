@@ -62,6 +62,8 @@ tagList(
     nav_panel(
       "About",
       p("This was made with love by William Gearty")
-    )
+    ),
+    nav_spacer(),
+    nav_item(input_dark_mode())
   )
 )
