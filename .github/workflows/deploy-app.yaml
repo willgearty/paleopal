@@ -40,7 +40,7 @@ jobs:
       - name: Build site
         shell: Rscript {0}
         run: |
-          shinylive::export(".", "site",
+          shinylive::export("myapp", "site",
                             template_params = list(title = "paleopal"))
 
       - name: Upload site artifact
