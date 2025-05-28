@@ -34,7 +34,7 @@ jobs:
           # Find package dependencies using {renv} and install with {pak}
           pak::repo_add(rhub = 'https://willgearty.r-universe.dev')
           pak::pak(
-            unique(renv::dependencies(".")$Package)
+            unique(renv::dependencies("myapp")$Package)
           )
 
       - name: Build site
