@@ -23,15 +23,25 @@ library(clipr)
 
 # libraries for data handling/viz
 library(dplyr)
+library(munsell)
 library(ggplot2)
 library(rlang)
 library(purrr)
 
+is_shinylive <- function() { R.Version()$os == "emscripten" }
+
 # paleo libraries
 # require curl which can't be used for shinylive apps
-library(paleobioDB)
-library(palaeoverse)
-library(deeptime)
+if(is_shinylive()) library(paleobioDB)
+#library(palaeoverse)
+#library(deeptime)
+
+# fixes downloads with shinylive on Chrome: https://github.com/posit-dev/r-shinylive/issues/74
+downloadButton <- function(...) {
+  tag <- shiny::downloadButton(...)
+  tag$attribs$download <- NULL
+  tag
+}
 
 # get list of module directories
 # modules should be listed in the order they will be loaded (prepend numbers)
