@@ -11,5 +11,5 @@ btn2 <- actionButton("mod01_add_option_2",
 
 accordion_panel(
   title = "Add Data",
-  if (is_shinylive()) card(btn1, btn2) else card(btn1)
+  if (is_shinylive()) card(btn1) else card(btn1, btn2)
 )
