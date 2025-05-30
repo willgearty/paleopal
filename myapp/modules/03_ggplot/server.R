@@ -2,8 +2,69 @@
 # this includes adding libraries to the report, handling dynamic UI elements,
 # and setting up listeners
 
-# handle adding the first option
+# handle adding the first option (scatterplot)
 observeEvent(input$mod03_add_option_1, {
+  ind <- input$accordion_version
+
+  # make a scatterplot with ggplot
+  output[[paste0("plot_", ind)]] <- metaRender2(renderPlot, {
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
+        input[[paste0("column_", ind, "_2")]],
+        get_int_data(input[[paste0("dataset_", ind)]]))
+    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    req(df[[input[[paste0("column_", ind, "_1")]]]],
+        df[[input[[paste0("column_", ind, "_2")]]]])
+    req(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
+        is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]))
+    metaExpr({
+      ggplot(..(get_int_data(input[[paste0("dataset_", ind)]])()),
+             aes(x = !!..(input[[paste0("column_", ind, "_1")]]),
+                 y = !!..(input[[paste0("column_", ind, "_2")]]))) +
+        geom_point(color = "red") +
+        theme_classic()
+    })
+  })
+  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
+        input[[paste0("column_", ind, "_2")]],
+        get_int_data(input[[paste0("dataset_", ind)]]))
+    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
+                  "x-axis column must be numeric"),
+             need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
+                  "y-axis column must be numeric"))
+    metaExpr({
+      expandChain_shared(output[[paste0("plot_", ind)]]())
+    })
+  })
+
+  clip_observe(input, output, ind,
+               expr(
+                 expandChain_shared(output[[paste0("plot_", ind)]]())
+               ))
+
+  # add the UI elements to the workflow and report
+  add_shinypal_step(
+    input, ind, mod03_ui_option_1, mod03_report_option_1,
+    list(
+      inject(quote(
+        output[[paste0("plot_", !!ind)]]()
+      ))
+    ),
+    c("ggplot2")
+  )
+
+  # choices should always include all intermediate data.frames
+  df_select_observe(input, ind)
+
+  # if chosen dataset is changed, change the column choices
+  column_select_observe(input, ind, paste0("column_", ind, "_1"))
+  column_select_observe(input, ind, paste0("column_", ind, "_2"))
+
+}, ignoreInit = TRUE)
+
+# handle adding the second option (map)
+observeEvent(input$mod03_add_option_2, {
   ind <- input$accordion_version
 
   # make a map of occs with ggplot
@@ -46,7 +107,7 @@ observeEvent(input$mod03_add_option_1, {
 
   # add the UI elements to the workflow and report
   add_shinypal_step(
-    input, ind, mod03_ui_option_1, mod03_report_option_1,
+    input, ind, mod03_ui_option_2, mod03_report_option_2,
     list(
       inject(quote(
         output[[paste0("map_", !!ind)]]()
