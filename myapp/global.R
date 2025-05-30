@@ -33,7 +33,7 @@ is_shinylive <- function() { R.Version()$os == "emscripten" }
 # paleo libraries
 # require curl which can't be used for shinylive apps
 if(!is_shinylive()) library(paleobioDB)
-#library(palaeoverse)
+library(palaeoverse)
 #library(deeptime)
 
 # fixes downloads with shinylive on Chrome: https://github.com/posit-dev/r-shinylive/issues/74
