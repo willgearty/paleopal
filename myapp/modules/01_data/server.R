@@ -12,9 +12,15 @@ observeEvent(input$mod01_add_option_1, {
   set_int_data(
     metaReactive2({
       req(input[[paste0("palaeoverse_", ind)]])
-      metaExpr({
-        get(..(input[[paste0("palaeoverse_", ind)]]))
-      })
+      if (input[[paste0("palaeoverse_", ind)]] == "reefs") {
+        metaExpr({
+          palaeoverse::reefs
+        })
+      } else if (input[[paste0("palaeoverse_", ind)]] == "tetrapods") {
+        metaExpr({
+          palaeoverse::tetrapods
+        })
+      }
     }, varname = paste0("occs_", ind)),
     paste0("occs_", ind)
   )
