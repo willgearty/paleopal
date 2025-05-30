@@ -61,7 +61,8 @@ tagList(
     ),
     nav_panel(
       "About",
-      p("This was made with love by William Gearty")
+      p(HTML("This was made with love by <a href='https://github.com/willgearty' target = '_blank'>William Gearty</a>")),
+      p(HTML("The source code for the <strong>paleopal</strong> Shiny app is available <a href='https://github.com/willgearty/paleopal' target = '_blank'>on GitHub</a>. This app is built using the <a href='https://github.com/willgearty/shinypal' target = '_blank'>shinypal framework</a> and hosted as a <a href='https://docs.r-wasm.org/' target = '_blank'>webr package</a> with GitHub pages using the <a href='https://posit-dev.github.io/r-shinylive/' target = '_blank'>shinylive package</a>."))
     ),
     nav_spacer(),
     nav_item(input_dark_mode())
