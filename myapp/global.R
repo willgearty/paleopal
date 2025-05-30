@@ -28,6 +28,9 @@ library(ggplot2)
 library(rlang)
 library(purrr)
 
+reefs <- readRDS("data/reefs.RDS")
+tetrapods <- readRDS("data/tetrapods.RDS")
+
 is_shinylive <- function() { R.Version()$os == "emscripten" }
 
 # paleo libraries

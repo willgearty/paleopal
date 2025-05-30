@@ -14,11 +14,11 @@ observeEvent(input$mod01_add_option_1, {
       req(input[[paste0("palaeoverse_", ind)]])
       if (input[[paste0("palaeoverse_", ind)]] == "reefs") {
         metaExpr({
-          palaeoverse::reefs
+          reefs
         })
       } else if (input[[paste0("palaeoverse_", ind)]] == "tetrapods") {
         metaExpr({
-          palaeoverse::tetrapods
+          tetrapods
         })
       }
     }, varname = paste0("occs_", ind)),
@@ -49,7 +49,20 @@ observeEvent(input$mod01_add_option_1, {
         invisible(get_int_data(paste0("occs_", !!ind))())
       ))
     ),
-    c("palaeoverse")
+    c(),
+    list(get_int_data(paste0("occs_", ind)),
+         function() {
+           req(input[[paste0("palaeoverse_", ind)]])
+           if (input[[paste0("palaeoverse_", ind)]] == "reefs") {
+             metaExpr({
+               palaeoverse::reefs
+             })
+           } else if (input[[paste0("palaeoverse_", ind)]] == "tetrapods") {
+             metaExpr({
+               palaeoverse::tetrapods
+             })
+           }
+         })
   )
 }, ignoreInit = TRUE)
 
