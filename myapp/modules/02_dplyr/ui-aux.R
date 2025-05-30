@@ -11,7 +11,7 @@ mod02_ui_option_1 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
-      "Remove duplicate rows",
+      HTML(paste(icon("copy", class = "fa-solid"), "Remove duplicate rows")),
       select_dataset_input(ind),
       df_modal_button(ind)
     )
@@ -23,7 +23,7 @@ mod02_ui_option_2 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
-      "Filter by a specific column",
+      HTML(paste(icon("filter"), "Filter by a specific column")),
       select_dataset_input(ind),
       select_column_input(ind),
       textInput(paste0("text_", ind), "Enter a value to filter by:"),
