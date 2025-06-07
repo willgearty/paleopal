@@ -39,7 +39,7 @@ mod03_report_option_1 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),
-      plotOutput(paste0("plot_", ind))
+      withSpinner(plotOutput(paste0("plot_", ind)))
     )
   )
 }
@@ -48,7 +48,7 @@ mod03_report_option_2 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),
-      plotOutput(paste0("map_", ind))
+      withSpinner(plotOutput(paste0("map_", ind)))
     )
   )
 }

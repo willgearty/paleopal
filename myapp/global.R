@@ -19,6 +19,7 @@ library(shinymeta)
 library(sortable)
 library(reactable)
 library(clipr)
+library(shinycssloaders)
 
 # libraries for data handling/viz
 library(dplyr)
