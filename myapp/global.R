@@ -12,7 +12,6 @@
 # libraries for the UI
 library(shinypal)
 library(shiny)
-library(shinyjs)
 library(htmltools)
 library(fontawesome)
 library(bslib)

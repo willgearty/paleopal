@@ -10,7 +10,6 @@
 #
 
 tagList(
-  useShinyjs(),
   tags$head(
     tags$style(
       HTML(
