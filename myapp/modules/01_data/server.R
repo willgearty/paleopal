@@ -127,6 +127,12 @@ observeEvent(input$mod01_add_option_3, {
       validate(need(ext == "csv", "Please upload a csv file"))
       validate(need(input[[paste0("num_rows_", ind)]] >= 0,
                     "Number of rows must be greater than or equal to 0"))
+      validate(need(tryCatch(
+        read.csv(file$datapath, skip = input[[paste0("num_rows_", ind)]]),
+        error = function(e) {
+          FALSE
+        }), "Invalid CSV file"
+      ))
       metaExpr({
         read.csv(..(file$datapath),
                  skip = ..(input[[paste0("num_rows_", ind)]]))
@@ -137,6 +143,19 @@ observeEvent(input$mod01_add_option_3, {
 
   output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
     req(input[[paste0("file1_", ind)]], input[[paste0("num_rows_", ind)]])
+    file <- input[[paste0("file1_", ind)]]
+    ext <- tools::file_ext(file$datapath)
+    validate(need(ext == "csv", "Please upload a csv file"))
+    validate(need(input[[paste0("num_rows_", ind)]] >= 0,
+                  "Number of rows must be greater than or equal to 0"))
+    validate(need(tryCatch(
+      read.csv(file$datapath, skip = input[[paste0("num_rows_", ind)]]),
+      error = function(e) {
+        FALSE
+      }),
+      paste("Invalid CSV file or # of rows to skip.",
+            "Try a different file or # of rows.")
+    ))
     metaExpr({
       expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
     })
