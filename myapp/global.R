@@ -12,21 +12,19 @@
 # libraries for the UI
 library(shinypal)
 library(shiny)
-library(htmltools)
 library(fontawesome)
 library(bslib)
 library(shinymeta)
 library(sortable)
-library(reactable)
-library(clipr)
 library(shinycssloaders)
 
 # libraries for data handling/viz
 library(dplyr)
 library(munsell)
 library(ggplot2)
+
+# for code injection
 library(rlang)
-library(purrr)
 
 reefs <- readRDS("data/reefs.RDS")
 tetrapods <- readRDS("data/tetrapods.RDS")
