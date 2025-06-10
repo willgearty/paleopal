@@ -36,13 +36,6 @@ is_shinylive <- function() { R.Version()$os == "emscripten" }
 if(!is_shinylive()) library(paleobioDB)
 #library(deeptime)
 
-# fixes downloads with shinylive on Chrome: https://github.com/posit-dev/r-shinylive/issues/74
-downloadButton <- function(...) {
-  tag <- shiny::downloadButton(...)
-  tag$attribs$download <- NULL
-  tag
-}
-
 # get list of module directories
 # modules should be listed in the order they will be loaded (prepend numbers)
 modules <- list.dirs("./modules/", recursive = FALSE)
