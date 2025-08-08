@@ -10,7 +10,7 @@ mod01_ui_option_1 <- function(ind) {
       ind = ind,
       HTML(paste(icon("box-open"),
                  "Use occurrence data from the palaeoverse package")),
-      p(HTML("You can choose between occurrence data for Panerozoic reefs ('reefs', <a href='https://palaeoverse.palaeoverse.org/reference/reefs.html' target = '_blank'>more details here</a>) and occurrence data for early tetrapods ('tetrapods', <a href='https://palaeoverse.palaeoverse.org/reference/reefs.html' target = '_blank'>more details here</a>).")),
+      p(HTML("You can choose between occurrence data for Phanerozoic reefs ('reefs', <a href='https://palaeoverse.palaeoverse.org/reference/reefs.html' target = '_blank'>more details here</a>) and occurrence data for early tetrapods ('tetrapods', <a href='https://palaeoverse.palaeoverse.org/reference/reefs.html' target = '_blank'>more details here</a>).")),
       selectInput(paste0("palaeoverse_", ind), "Choose a dataset:",
                   choices = c("reefs", "tetrapods")),
       df_modal_button(ind)
