@@ -40,8 +40,18 @@ jobs:
       - name: Build site
         shell: Rscript {0}
         run: |
-          shinylive::export("myapp", "site",
-                            template_params = list(title = "paleopal"))
+          shinylive::export("myapp", "site", assets_version = "0.10.6",
+                            template_params = list(title = "paleopal",
+                            include_before_body =
+                              "<!-- Google tag (gtag.js) -->
+                              <script async src='https://www.googletagmanager.com/gtag/js?id=G-B48C68KGQJ'></script>
+                              <script>
+                                window.dataLayer = window.dataLayer || [];
+                                function gtag(){dataLayer.push(arguments);}
+                                gtag('js', new Date());
+
+                                gtag('config', 'G-B48C68KGQJ');
+                              </script>"))
 
       - name: Upload site artifact
         if: github.ref == 'refs/heads/main'
