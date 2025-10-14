@@ -42,16 +42,62 @@
   - base pipe vs magrittr pipe? (base pipe converts to non-piped code)
 
 TODO:
-- option to upload custom data (done)
-  - need to include uploaded files in buildRmdBundle somehow...
-  - still showing full file path in the code
-- icons for buttons?
+[x] use req() more to reduce hangy-ness
+[x] replace some req() with validate() and need() to show error messages
+[ ] use NS() for step namespaces?
+  - can use NS("step1") to generate a function
+[ ] a way to share a pipeline? (some way to restore a pipeline from a string a la bookmarking?)
+  - maybe include a full example workflow as a link somewhere?
+[ ] catch download errors? (e.g., when trying to plot with a non-numeric column)
+[x] don't load PBDB-related steps if curl isn't available
+[ ] add option to download from PBDB without curl?
+[x] add palaeoverse datasets as data options
+[ ] add more plotting options
+  - boxplots
+  - plot through time
+[ ] add mutate options
+[x] add icons to workflow step headers
+[x] add link to github repo under "About" tab
+[x] color steps and parts of notebook with same colors
+[x] shinycssloaders to show that plots/tables are loading
+[x] maybe switch to DT for rendering larger tables: https://rstudio.github.io/DT/
+[x] move generic CSS to shinypal
+[x] check loaded packages for paleopal
+[ ] check for no errors before allowing download of script?
+[x] google analytics
+
+Idea for substituteMetaReactive:
+[x] after any change in the app, replace expansionContext, should be HIGH priority (this is already done)
+[x] add substitutes (each is 2-length list) to a shinypal list, which is run after every change (right after the above is done) (this is now done)
+- still have duplicate code/disappearing code bugs (see below)
 
 BUGS:
-- plot option duplicates download code
+[ ] plot option duplicates download code
   - I tried using a common expansionContext, but that breaks lots of the code chunks (e.g., pbdb download code disappears when changing genus)
   - may need to use ec$substituteMetaReactive()
   - https://github.com/rstudio/shinymeta/issues/126
-- !!as.symbol in the ggplot code: https://github.com/rstudio/shinymeta/issues/125
-- warnings from removing intermediate_list items
-  - req() seems to make this better (maybe play around with cancelOutput arg?)
+  - this seems better when refreshing the shared EC every time, but still has duplicates sometimes
+[ ] !!as.symbol in the ggplot code: https://github.com/rstudio/shinymeta/issues/125
+[ ] warnings from removing intermediate_list items
+  - req() seems to make this better
+  - maybe need something in get_int_data()? or a check before that?
+[x] after adding "upload occurrence data" step, can't add steps from other modules until file is chosen
+  - maybe this is good behavior? but we definitely want a message in the code area
+  - added an error message for this
+[x] dark mode doesn't work for tables
+  - fixed by bootstrap style in DT
+[ ] crashes when steps cause an infinite dependency loop
+[ ] removing a step with dependencies causing a crash
+  - should check there are no dependencies before removing step
+[ ] map step crashes when added as first step
+  - just prevents adding step on shinylive
+[x] downloads don't work on shinylive
+  - hopefully fixed...
+[ ] if you add steps too fast they have the same index
+[ ] if you add a data step, look at data, remove step, add new data step, look at data, there are 2 modals, then close them both, then modal never loads again
+[x] download fails because pandoc is not installed
+  - check if pandoc is installed, if not, don't render
+  - https://github.com/tweag/pandoc-wasm
+  - https://github.com/posit-dev/r-shinylive/issues/155
+[x] "The `system()` function is unsupported under Emscripten."
+  - I think this comes from the zip() function, so we could just try downloading the rmarkdown file by itself
