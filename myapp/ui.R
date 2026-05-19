@@ -12,6 +12,7 @@
 tagList(
   page_navbar(
     theme = bs_theme(version = 5, preset="bootstrap"),
+    tags$script(src = "app.js"),
     fillable_mobile = TRUE,
     ## title ----
     title = 'paleopal',
