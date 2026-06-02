@@ -19,19 +19,12 @@ observeEvent(input$mod02_add_option_1, {
     }, varname = paste0("occs_", ind)),
     paste0("occs_", ind)
   )
-  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+  output[[paste0("code_", ind)]] <- renderPrint({
     req(input[[paste0("dataset_", ind)]])
-    metaExpr({
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    })
+    get_chunk(ind)
   })
 
-  clip_observe(
-    input, output, ind,
-    expr(
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    )
-  )
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
 
   df_modal_observe(input, output, ind, paste0("occs_", ind))
 
@@ -70,19 +63,12 @@ observeEvent(input$mod02_add_option_2, {
     }, varname = paste0("occs_", ind)),
     paste0("occs_", ind)
   )
-  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+  output[[paste0("code_", ind)]] <- renderPrint({
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]])
-    metaExpr({
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    })
+    get_chunk(ind)
   })
 
-  clip_observe(
-    input, output, ind,
-    expr(
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    )
-  )
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
 
   df_modal_observe(input, output, ind, paste0("occs_", ind))
 

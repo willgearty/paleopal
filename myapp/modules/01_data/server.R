@@ -24,19 +24,12 @@ observeEvent(input$mod01_add_option_1, {
     }, varname = paste0("occs_", ind)),
     paste0("occs_", ind)
   )
-  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+  output[[paste0("code_", ind)]] <- renderPrint({
     req(input[[paste0("palaeoverse_", ind)]])
-    metaExpr({
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    })
+    get_chunk(ind)
   })
 
-  clip_observe(
-    input, output, ind,
-    expr(
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    )
-  )
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
 
   df_modal_observe(input, output, ind, paste0("occs_", ind))
 
@@ -83,19 +76,12 @@ observeEvent(input$mod01_add_option_2, {
     }, varname = paste0("occs_", ind)),
     paste0("occs_", ind)
   )
-  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+  output[[paste0("code_", ind)]] <- renderPrint({
     req(input[[paste0("genus_", ind)]])
-    metaExpr({
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    })
+    get_chunk(ind)
   })
 
-  clip_observe(
-    input, output, ind,
-    expr(
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    )
-  )
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
 
   df_modal_observe(input, output, ind, paste0("occs_", ind))
 
@@ -144,7 +130,7 @@ observeEvent(input$mod01_add_option_3, {
     paste0("occs_", ind)
   )
 
-  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+  output[[paste0("code_", ind)]] <- renderPrint({
     validate(need(input[[paste0("file1_", ind)]], "Please upload a file"),
              need(input[[paste0("num_rows_", ind)]],
                   "Please specify the number of rows to skip"))
@@ -160,19 +146,12 @@ observeEvent(input$mod01_add_option_3, {
                  FALSE
                }), paste("Invalid CSV file or # of rows to skip.",
                          "Try a different file or # of rows.")))
-    metaExpr({
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    })
+    get_chunk(ind)
   })
 
   file_observe(input, paste0("file1_", ind))
 
-  clip_observe(
-    input, output, ind,
-    expr(
-      expandChain_shared(invisible(get_int_data(paste0("occs_", ind))()))
-    )
-  )
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
 
   df_modal_observe(input, output, ind, paste0("occs_", ind))
 

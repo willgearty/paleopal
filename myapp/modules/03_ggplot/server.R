@@ -24,7 +24,7 @@ observeEvent(input$mod03_add_option_1, {
         theme_classic()
     })
   })
-  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+  output[[paste0("code_", ind)]] <- renderPrint({
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         get_int_data(input[[paste0("dataset_", ind)]]))
@@ -33,9 +33,7 @@ observeEvent(input$mod03_add_option_1, {
                   "x-axis column must be numeric"),
              need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
                   "y-axis column must be numeric"))
-    metaExpr({
-      expandChain_shared(output[[paste0("plot_", ind)]]())
-    })
+    get_chunk(ind)
   })
 
   clip_observe(input, output, ind,
@@ -86,7 +84,7 @@ observeEvent(input$mod03_add_option_2, {
         coord_sf()
     })
   })
-  output[[paste0("code_", ind)]] <- metaRender2(renderPrint, {
+  output[[paste0("code_", ind)]] <- renderPrint({
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         get_int_data(input[[paste0("dataset_", ind)]]))
@@ -95,9 +93,7 @@ observeEvent(input$mod03_add_option_2, {
                   "Longitude column must be numeric"),
              need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
                   "Latitude column must be numeric"))
-    metaExpr({
-      expandChain_shared(output[[paste0("map_", ind)]]())
-    })
+    get_chunk(ind)
   })
 
   clip_observe(input, output, ind,
