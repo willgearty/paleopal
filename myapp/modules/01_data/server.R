@@ -102,35 +102,9 @@ observeEvent(input$mod01_add_option_2, {
 observeEvent(input$mod01_add_option_3, {
   ind <- input$accordion_version
 
-  # build reactive expressions for each instance of this component
-  # anything that will be included as code in the report needs to be added to
-  # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
-      validate(need(input[[paste0("file1_", ind)]], "Please upload a file"),
-               need(input[[paste0("num_rows_", ind)]],
-                    "Please specify the number of rows to skip"))
-      file <- input[[paste0("file1_", ind)]]
-      ext <- tools::file_ext(file$datapath)
-      validate(need(ext == "csv", "Please upload a csv file"),
-               need(input[[paste0("num_rows_", ind)]] >= 0,
-                    "Number of rows must be greater than or equal to 0"),
-               need(tryCatch(
-                 read.csv(file$datapath,
-                          skip = input[[paste0("num_rows_", ind)]]),
-                 error = function(e) {
-                   FALSE
-                 }), paste("Invalid CSV file or # of rows to skip.",
-                           "Try a different file or # of rows.")))
-      metaExpr({
-        read.csv(..(file$datapath),
-                 skip = ..(input[[paste0("num_rows_", ind)]]))
-      })
-    }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
-  )
-
-  output[[paste0("code_", ind)]] <- renderPrint({
+  # validate the upload once and share it between the data reactive and the
+  # code output below
+  valid_upload <- reactive({
     validate(need(input[[paste0("file1_", ind)]], "Please upload a file"),
              need(input[[paste0("num_rows_", ind)]],
                   "Please specify the number of rows to skip"))
@@ -141,11 +115,31 @@ observeEvent(input$mod01_add_option_3, {
                   "Number of rows must be greater than or equal to 0"),
              need(tryCatch(
                read.csv(file$datapath,
-                        skip = input[[paste0("num_rows_", ind)]]),
+                        skip = input[[paste0("num_rows_", ind)]],
+                        nrows = 1),
                error = function(e) {
                  FALSE
                }), paste("Invalid CSV file or # of rows to skip.",
                          "Try a different file or # of rows.")))
+    file
+  })
+
+  # build reactive expressions for each instance of this component
+  # anything that will be included as code in the report needs to be added to
+  # intermediate list, input, or output (or some other global object)
+  set_int_data(
+    metaReactive2({
+      file <- valid_upload()
+      metaExpr({
+        read.csv(..(file$datapath),
+                 skip = ..(input[[paste0("num_rows_", ind)]]))
+      })
+    }, varname = paste0("occs_", ind)),
+    paste0("occs_", ind)
+  )
+
+  output[[paste0("code_", ind)]] <- renderPrint({
+    valid_upload()
     get_chunk(ind)
   })
 
