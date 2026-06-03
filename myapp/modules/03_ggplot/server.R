@@ -6,12 +6,19 @@
 observeEvent(input$mod03_add_option_1, {
   ind <- input$accordion_version
 
-  # make a scatterplot with ggplot
-  output[[paste0("plot_", ind)]] <- metaRender2(renderPlot, {
+  # fetch the chosen data.frame once for both the plot and the code output
+  plot_df <- reactive({
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         get_int_data(input[[paste0("dataset_", ind)]]))
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    get_int_data(input[[paste0("dataset_", ind)]])()
+  })
+
+  # make a scatterplot with ggplot
+  output[[paste0("plot_", ind)]] <- metaRender2(renderPlot, {
+    df <- plot_df()
+    # leave the plot blank (via req) rather than repeating the validation
+    # message -- the code chunk shown just above already displays it
     req(df[[input[[paste0("column_", ind, "_1")]]]],
         df[[input[[paste0("column_", ind, "_2")]]]])
     req(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
@@ -25,10 +32,7 @@ observeEvent(input$mod03_add_option_1, {
     })
   })
   output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
-        input[[paste0("column_", ind, "_2")]],
-        get_int_data(input[[paste0("dataset_", ind)]]))
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    df <- plot_df()
     validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
                   "x-axis column must be numeric"),
              need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
@@ -62,12 +66,19 @@ observeEvent(input$mod03_add_option_1, {
 observeEvent(input$mod03_add_option_2, {
   ind <- input$accordion_version
 
-  # make a map of occs with ggplot
-  output[[paste0("map_", ind)]] <- metaRender2(renderPlot, {
+  # fetch the chosen data.frame once for both the map and the code output
+  plot_df <- reactive({
     req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
         input[[paste0("column_", ind, "_2")]],
         get_int_data(input[[paste0("dataset_", ind)]]))
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    get_int_data(input[[paste0("dataset_", ind)]])()
+  })
+
+  # make a map of occs with ggplot
+  output[[paste0("map_", ind)]] <- metaRender2(renderPlot, {
+    df <- plot_df()
+    # leave the plot blank (via req) rather than repeating the validation
+    # message -- the code chunk shown just above already displays it
     req(df[[input[[paste0("column_", ind, "_1")]]]],
         df[[input[[paste0("column_", ind, "_2")]]]])
     req(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
@@ -82,10 +93,7 @@ observeEvent(input$mod03_add_option_2, {
     })
   })
   output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
-        input[[paste0("column_", ind, "_2")]],
-        get_int_data(input[[paste0("dataset_", ind)]]))
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
+    df <- plot_df()
     validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
                   "Longitude column must be numeric"),
              need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
