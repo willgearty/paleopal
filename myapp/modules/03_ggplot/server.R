@@ -36,10 +36,7 @@ observeEvent(input$mod03_add_option_1, {
     get_chunk(ind)
   })
 
-  clip_observe(input, output, ind,
-               expr(
-                 expandChain_shared(output[[paste0("plot_", ind)]]())
-               ))
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
 
   # add the UI elements to the workflow and report
   add_shinypal_step(
@@ -96,10 +93,7 @@ observeEvent(input$mod03_add_option_2, {
     get_chunk(ind)
   })
 
-  clip_observe(input, output, ind,
-               expr(
-                 expandChain_shared(output[[paste0("map_", ind)]]())
-               ))
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
 
   # add the UI elements to the workflow and report
   add_shinypal_step(
