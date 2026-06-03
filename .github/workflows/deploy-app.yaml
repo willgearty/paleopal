@@ -40,7 +40,7 @@ jobs:
       - name: Build site
         shell: Rscript {0}
         run: |
-          shinylive::export("myapp", "site", assets_version = "0.10.8",
+          shinylive::export("myapp", "site", assets_version = "0.10.12",
                             template_params = list(title = "paleopal",
                             include_in_head =
                               "<!-- Google tag (gtag.js) -->
