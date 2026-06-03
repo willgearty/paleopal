@@ -5,7 +5,6 @@
 
 # workflow elements ####
 mod03_ui_option_1 <- function(ind) {
-  df_names <- get_int_dfs(ind)
   tagList(
     accordion_panel_remove_button(
       ind = ind,
@@ -20,7 +19,6 @@ mod03_ui_option_1 <- function(ind) {
 }
 
 mod03_ui_option_2 <- function(ind) {
-  df_names <- get_int_dfs(ind)
   tagList(
     accordion_panel_remove_button(
       ind = ind,
