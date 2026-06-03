@@ -26,6 +26,20 @@ library(ggplot2)
 # for code injection
 library(rlang)
 
+# Cache the borders("world") layer so repeat calls in the live app reuse it
+local({
+  cache <- new.env(parent = emptyenv())
+  cached_borders <- function(database = "world", regions = ".", ...) {
+    key <- paste(database, regions,
+                 paste(deparse(list(...)), collapse = ""), sep = "\r")
+    if (is.null(cache[[key]])) {
+      cache[[key]] <- ggplot2::borders(database, regions, ...)
+    }
+    cache[[key]]
+  }
+  assign("borders", cached_borders, envir = globalenv())
+})
+
 reefs <- readRDS("data/reefs.RDS")
 tetrapods <- readRDS("data/tetrapods.RDS")
 
