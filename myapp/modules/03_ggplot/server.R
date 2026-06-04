@@ -4,7 +4,7 @@
 
 # handle adding the first option (scatterplot)
 observeEvent(input$mod03_add_option_1, {
-  ind <- input$accordion_version
+  ind <- next_step_index()
 
   # fetch the chosen data.frame once for both the plot and the code output
   plot_df <- reactive({
@@ -64,7 +64,7 @@ observeEvent(input$mod03_add_option_1, {
 
 # handle adding the second option (map)
 observeEvent(input$mod03_add_option_2, {
-  ind <- input$accordion_version
+  ind <- next_step_index()
 
   # fetch the chosen data.frame once for both the map and the code output
   plot_df <- reactive({

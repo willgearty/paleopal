@@ -4,7 +4,7 @@
 
 # handle adding the first option (palaeoverse data)
 observeEvent(input$mod01_add_option_1, {
-  ind <- input$accordion_version
+  ind <- next_step_index()
 
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
@@ -61,7 +61,7 @@ observeEvent(input$mod01_add_option_1, {
 
 # handle adding the second option (PBDB data)
 observeEvent(input$mod01_add_option_2, {
-  ind <- input$accordion_version
+  ind <- next_step_index()
 
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
@@ -100,7 +100,7 @@ observeEvent(input$mod01_add_option_2, {
 
 # handle adding the third option (uploaded data)
 observeEvent(input$mod01_add_option_3, {
-  ind <- input$accordion_version
+  ind <- next_step_index()
 
   # validate the upload once and share it between the data reactive and the
   # code output below
