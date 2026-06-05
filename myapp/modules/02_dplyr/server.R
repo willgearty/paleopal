@@ -57,7 +57,8 @@ observeEvent(input$mod02_add_option_2, {
       req(df[[input[[paste0("column_", ind)]]]])
       metaExpr({
         ..(get_int_data(input[[paste0("dataset_", ind)]])()) %>%
-          filter(!!..(input[[paste0("column_", ind)]]) ==
+          # wrap the unquoted column in parens so `!!` binds to the symbol
+          filter((!!..(input[[paste0("column_", ind)]])) ==
                    ..(input[[paste0("text_", ind)]]))
       })
     }, varname = paste0("occs_", ind)),
