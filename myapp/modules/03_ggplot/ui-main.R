@@ -14,6 +14,9 @@ accordion_panel(
                             "Plot data on a map"))),
     actionButton("mod03_add_option_3",
                  HTML(paste(icon("hourglass-half", class = "fa-solid"),
-                            "Plot data through time")))
+                            "Plot data through time"))),
+    actionButton("mod03_add_option_4",
+                 HTML(paste(icon("chart-column", class = "fa-solid"),
+                            "Make a box or violin plot")))
   )
 )

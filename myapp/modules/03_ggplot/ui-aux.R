@@ -51,6 +51,24 @@ mod03_ui_option_3 <- function(ind) {
   )
 }
 
+mod03_ui_option_4 <- function(ind) {
+  tagList(
+    accordion_panel_remove_button(
+      ind = ind,
+      HTML(paste(icon("chart-column"), "Make a box or violin plot")),
+      select_dataset_input(ind),
+      select_column_input(paste0(ind, "_1"),
+                          "Choose a grouping column (categorical):",
+                          "formation"),
+      select_column_input(paste0(ind, "_2"), "Choose a column for the y-axis:",
+                          "lat"),
+      selectInput(paste0("geom_", ind), "Geometry:",
+                  choices = c("Box plot" = "boxplot", "Violin plot" = "violin"),
+                  selected = "boxplot")
+    )
+  )
+}
+
 # report elements ####
 mod03_report_option_1 <- function(ind) {
   tagList(
@@ -71,6 +89,15 @@ mod03_report_option_2 <- function(ind) {
 }
 
 mod03_report_option_3 <- function(ind) {
+  tagList(
+    div(
+      verbatimTextOutput_copy(ind),
+      withSpinner(plotOutput(paste0("plot_", ind)))
+    )
+  )
+}
+
+mod03_report_option_4 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),
