@@ -44,18 +44,19 @@
 TODO:
 [x] use req() more to reduce hangy-ness
 [x] replace some req() with validate() and need() to show error messages
-[ ] use NS() for step namespaces?
+[ ] use NS() for step and/or module namespaces?
   - can use NS("step1") to generate a function
 [ ] a way to share a pipeline? (some way to restore a pipeline from a string a la bookmarking?)
   - maybe include a full example workflow as a link somewhere?
 [ ] catch download errors? (e.g., when trying to plot with a non-numeric column)
 [x] don't load PBDB-related steps if curl isn't available
-[ ] add option to download from PBDB without curl?
+[ ] curl is now available for shinylive? https://jeroen.github.io/notes/webassembly-curl/
 [x] add palaeoverse datasets as data options
 [ ] add more plotting options
   - boxplots
   - plot through time
 [ ] add mutate options
+  - some/all of the ten rules (https://tenrules.palaeoverse.org/)
 [x] add icons to workflow step headers
 [x] add link to github repo under "About" tab
 [x] color steps and parts of notebook with same colors
@@ -65,6 +66,9 @@ TODO:
 [x] check loaded packages for paleopal
 [ ] check for no errors before allowing download of script?
 [x] google analytics
+[ ] move caching into module? caching for other modules?
+  - anything else to move into modules? libraries?
+[ ] anything else that can be moved to shinypal?
 
 Idea for substituteMetaReactive:
 [x] after any change in the app, replace expansionContext, should be HIGH priority (this is already done)
@@ -78,7 +82,7 @@ BUGS:
   - https://github.com/rstudio/shinymeta/issues/126
   - this seems better when refreshing the shared EC every time, but still has duplicates sometimes
 [x] !!as.symbol in the ggplot code: https://github.com/rstudio/shinymeta/issues/125
-[ ] warnings from removing intermediate_list items
+[x] warnings from removing intermediate_list items
   - req() seems to make this better
   - maybe need something in get_int_data()? or a check before that?
 [x] after adding "upload occurrence data" step, can't add steps from other modules until file is chosen
@@ -86,18 +90,25 @@ BUGS:
   - added an error message for this
 [x] dark mode doesn't work for tables
   - fixed by bootstrap style in DT
-[ ] crashes when steps cause an infinite dependency loop
-[ ] removing a step with dependencies causing a crash
+[x] crashes when steps cause an infinite dependency loop
+[x] removing a step with dependencies causing a crash
   - should check there are no dependencies before removing step
-[ ] map step crashes when added as first step
+[x] map step crashes when added as first step
   - just prevents adding step on shinylive
 [x] downloads don't work on shinylive
   - hopefully fixed...
-[ ] if you add steps too fast they have the same index
-[ ] if you add a data step, look at data, remove step, add new data step, look at data, there are 2 modals, then close them both, then modal never loads again
+[x] if you add steps too fast they have the same index
+[x] if you add a data step, look at data, remove step, add new data step, look at data, there are 2 modals, then close them both, then modal never loads again
 [x] download fails because pandoc is not installed
   - check if pandoc is installed, if not, don't render
   - https://github.com/tweag/pandoc-wasm
   - https://github.com/posit-dev/r-shinylive/issues/155
 [x] "The `system()` function is unsupported under Emscripten."
   - I think this comes from the zip() function, so we could just try downloading the rmarkdown file by itself
+[x] Warning: Navigation containers expect a collection of `bslib::nav_panel()`/`shiny::tabPanel()`s and/or `bslib::nav_menu()`/`shiny::navbarMenu()`s. Consider using `header` or `footer` if you wish to place content above (or below) every panel's contents.
+[x] There's now a stray resize-indicator that doesn't work
+  - presumably due to a bslib update? maybe fixing the above warning would solve it
+  - ah, it works sometimes, but it's very inconsistent
+    - seems to work flawlessly on mobile, but intermittently does not work on desktop, perhaps because of this change: https://github.com/rstudio/bslib/pull/1299
+  - there's also a real bug where the resize indicator is in the wrong position for position = "right" sidebars
+[x] If you add a new data import step, the dataset dropdown for other steps does not update (even when the new data import step is moved above the data mutation step)
