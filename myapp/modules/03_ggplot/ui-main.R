@@ -11,6 +11,9 @@ accordion_panel(
                             "Make a scatterplot"))),
     actionButton("mod03_add_option_2",
                  HTML(paste(icon("map", class = "fa-solid"),
-                            "Plot data on a map")))
+                            "Plot data on a map"))),
+    actionButton("mod03_add_option_3",
+                 HTML(paste(icon("hourglass-half", class = "fa-solid"),
+                            "Plot data through time")))
   )
 )

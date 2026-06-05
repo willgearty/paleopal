@@ -122,3 +122,80 @@ observeEvent(input$mod03_add_option_2, {
   column_select_observe(input, ind, paste0("column_", ind, "_2"))
 
 }, ignoreInit = TRUE)
+
+# handle adding the third option (time series with a geological timescale)
+observeEvent(input$mod03_add_option_3, {
+  ind <- next_step_index()
+
+  # fetch the chosen data.frame once for both the plot and the code output
+  plot_df <- reactive({
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
+        input[[paste0("column_", ind, "_2")]],
+        get_int_data(input[[paste0("dataset_", ind)]]))
+    get_int_data(input[[paste0("dataset_", ind)]])()
+  })
+
+  # plot a time series; the geom and the geological timescale axis are toggleable
+  output[[paste0("plot_", ind)]] <- metaRender2(renderPlot, {
+    df <- plot_df()
+    # leave the plot blank (via req) rather than repeating the validation
+    # message -- the code chunk shown just above already displays it
+    req(df[[input[[paste0("column_", ind, "_1")]]]],
+        df[[input[[paste0("column_", ind, "_2")]]]])
+    req(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
+        is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]))
+    # pick the geom from the dropdown (default to points if unset)
+    geom_layer <- if (identical(input[[paste0("geom_", ind)]], "line")) {
+      quote(geom_line())
+    } else {
+      quote(geom_point())
+    }
+    # assemble the layers, adding coord_geo() only when the axis box is checked
+    layers <- list(geom_layer, quote(scale_x_reverse()))
+    if (isTRUE(input[[paste0("axis_", ind)]])) {
+      layers <- c(layers, list(quote(coord_geo())))
+    }
+    layers <- c(layers, list(quote(theme_classic())))
+    # build the ggplot() call then fold the layers on with `+`. constructing the
+    # expression (instead of a literal metaExpr) lets us omit coord_geo()
+    # entirely when the axis is off, rather than leaving a `+ NULL` stub; the
+    # ..()/!! markers are still expanded by metaExpr() below. the time column
+    # must be in millions of years (Ma) for the timescale to line up
+    plot_expr <- quote(
+      ggplot(..(get_int_data(input[[paste0("dataset_", ind)]])()),
+             aes(x = !!..(input[[paste0("column_", ind, "_1")]]),
+                 y = !!..(input[[paste0("column_", ind, "_2")]])))
+    )
+    for (layer in layers) plot_expr <- call("+", plot_expr, layer)
+    metaExpr(plot_expr, quoted = TRUE)
+  })
+  output[[paste0("code_", ind)]] <- renderPrint({
+    df <- plot_df()
+    validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]),
+                  "Time column must be numeric (ages in Ma)"),
+             need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
+                  "y-axis column must be numeric"))
+    get_chunk(ind)
+  })
+
+  clip_observe(input, output, ind, expr(get_chunk(ind)))
+
+  # add the UI elements to the workflow and report
+  add_shinypal_step(
+    input, ind, mod03_ui_option_3, mod03_report_option_3,
+    list(
+      inject(quote(
+        output[[paste0("plot_", !!ind)]]()
+      ))
+    ),
+    c("ggplot2", "deeptime")
+  )
+
+  # choices should always include all intermediate data.frames
+  df_select_observe(input, ind)
+
+  # if chosen dataset is changed, change the column choices
+  column_select_observe(input, ind, paste0("column_", ind, "_1"))
+  column_select_observe(input, ind, paste0("column_", ind, "_2"))
+
+}, ignoreInit = TRUE)

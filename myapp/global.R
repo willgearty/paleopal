@@ -18,13 +18,13 @@ library(shinymeta)
 library(sortable)
 library(shinycssloaders)
 
+# for code injection
+library(rlang)
+
 # libraries for data handling/viz
 library(dplyr)
 library(munsell)
 library(ggplot2)
-
-# for code injection
-library(rlang)
 
 # Cache the borders("world") layer so repeat calls in the live app reuse it
 local({
@@ -40,15 +40,14 @@ local({
   assign("borders", cached_borders, envir = globalenv())
 })
 
+# paleo libraries
+library(deeptime)
+
 reefs <- readRDS("data/reefs.RDS")
 tetrapods <- readRDS("data/tetrapods.RDS")
 
-is_shinylive <- function() { R.Version()$os == "emscripten" }
-
-# paleo libraries
 # require curl which can't be used for shinylive apps
-if(!is_shinylive()) library(paleobioDB)
-#library(deeptime)
+if(!shinypal:::is_shinylive()) library(paleobioDB)
 
 # get list of module directories
 # modules should be listed in the order they will be loaded (prepend numbers)
