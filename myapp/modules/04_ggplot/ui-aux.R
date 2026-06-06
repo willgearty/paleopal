@@ -4,7 +4,7 @@
 # suffix index of the workflow step
 
 # workflow elements ####
-mod03_ui_option_1 <- function(ind) {
+mod04_ui_option_1 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
@@ -18,7 +18,7 @@ mod03_ui_option_1 <- function(ind) {
   )
 }
 
-mod03_ui_option_2 <- function(ind) {
+mod04_ui_option_2 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
@@ -32,7 +32,7 @@ mod03_ui_option_2 <- function(ind) {
   )
 }
 
-mod03_ui_option_3 <- function(ind) {
+mod04_ui_option_3 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
@@ -51,7 +51,7 @@ mod03_ui_option_3 <- function(ind) {
   )
 }
 
-mod03_ui_option_4 <- function(ind) {
+mod04_ui_option_4 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
@@ -70,7 +70,7 @@ mod03_ui_option_4 <- function(ind) {
 }
 
 # report elements ####
-mod03_report_option_1 <- function(ind) {
+mod04_report_option_1 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),
@@ -79,7 +79,7 @@ mod03_report_option_1 <- function(ind) {
   )
 }
 
-mod03_report_option_2 <- function(ind) {
+mod04_report_option_2 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),
@@ -88,7 +88,7 @@ mod03_report_option_2 <- function(ind) {
   )
 }
 
-mod03_report_option_3 <- function(ind) {
+mod04_report_option_3 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),
@@ -97,7 +97,7 @@ mod03_report_option_3 <- function(ind) {
   )
 }
 
-mod03_report_option_4 <- function(ind) {
+mod04_report_option_4 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),

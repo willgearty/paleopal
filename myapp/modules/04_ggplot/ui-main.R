@@ -6,16 +6,16 @@
 accordion_panel(
   title = "Data Visualization",
   card(
-    actionButton("mod03_add_option_1",
+    actionButton("mod04_add_option_1",
                  HTML(paste(icon("chart-line", class = "fa-solid"),
                             "Make a scatterplot"))),
-    actionButton("mod03_add_option_2",
+    actionButton("mod04_add_option_2",
                  HTML(paste(icon("map", class = "fa-solid"),
                             "Plot data on a map"))),
-    actionButton("mod03_add_option_3",
+    actionButton("mod04_add_option_3",
                  HTML(paste(icon("hourglass-half", class = "fa-solid"),
                             "Plot data through time"))),
-    actionButton("mod03_add_option_4",
+    actionButton("mod04_add_option_4",
                  HTML(paste(icon("chart-column", class = "fa-solid"),
                             "Make a box or violin plot")))
   )

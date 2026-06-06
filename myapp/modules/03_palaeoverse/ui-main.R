@@ -6,8 +6,11 @@
 accordion_panel(
   title = "Paleobiology Tools",
   card(
-    actionButton("mod04_add_option_1",
+    actionButton("mod03_add_option_1",
                  HTML(paste(icon("layer-group", class = "fa-solid"),
-                            "Assign data to time bins")))
+                            "Assign data to time bins"))),
+    actionButton("mod03_add_option_2",
+                 HTML(paste(icon("clock-rotate-left", class = "fa-solid"),
+                            "Look up interval ages")))
   )
 )

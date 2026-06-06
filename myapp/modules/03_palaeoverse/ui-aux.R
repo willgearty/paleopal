@@ -6,7 +6,7 @@
 # name/number to keep them unique
 
 # workflow elements ####
-mod04_ui_option_1 <- function(ind) {
+mod03_ui_option_1 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
@@ -33,8 +33,36 @@ mod04_ui_option_1 <- function(ind) {
   )
 }
 
+mod03_ui_option_2 <- function(ind) {
+  tagList(
+    accordion_panel_remove_button(
+      ind = ind,
+      HTML(paste(icon("clock-rotate-left"), "Look up interval ages")),
+      select_dataset_input(ind),
+      select_column_input(paste0(ind, "_1"), "Earliest interval column:",
+                          "early_interval"),
+      select_column_input(paste0(ind, "_2"), "Latest interval column:",
+                          "late_interval"),
+      selectInput(paste0("intkey_", ind), "Interval names are from:",
+                  choices = c("Paleobiology / PaleoReefs Database" =
+                                "interval_key",
+                              "Geological time scale (GTS2020)" = "gts"),
+                  selected = "interval_key"),
+      df_modal_button(ind)
+    )
+  )
+}
+
 # report elements ####
-mod04_report_option_1 <- function(ind) {
+mod03_report_option_1 <- function(ind) {
+  tagList(
+    div(
+      verbatimTextOutput_copy(ind)
+    )
+  )
+}
+
+mod03_report_option_2 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind)

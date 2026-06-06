@@ -3,7 +3,7 @@
 # and setting up listeners
 
 # handle adding the first option (scatterplot)
-observeEvent(input$mod03_add_option_1, {
+observeEvent(input$mod04_add_option_1, {
   ind <- next_step_index()
 
   # fetch the chosen data.frame once for both the plot and the code output
@@ -44,7 +44,7 @@ observeEvent(input$mod03_add_option_1, {
 
   # add the UI elements to the workflow and report
   add_shinypal_step(
-    input, ind, mod03_ui_option_1, mod03_report_option_1,
+    input, ind, mod04_ui_option_1, mod04_report_option_1,
     list(
       inject(quote(
         output[[paste0("plot_", !!ind)]]()
@@ -63,7 +63,7 @@ observeEvent(input$mod03_add_option_1, {
 }, ignoreInit = TRUE)
 
 # handle adding the second option (map)
-observeEvent(input$mod03_add_option_2, {
+observeEvent(input$mod04_add_option_2, {
   ind <- next_step_index()
 
   # fetch the chosen data.frame once for both the map and the code output
@@ -105,7 +105,7 @@ observeEvent(input$mod03_add_option_2, {
 
   # add the UI elements to the workflow and report
   add_shinypal_step(
-    input, ind, mod03_ui_option_2, mod03_report_option_2,
+    input, ind, mod04_ui_option_2, mod04_report_option_2,
     list(
       inject(quote(
         output[[paste0("map_", !!ind)]]()
@@ -124,7 +124,7 @@ observeEvent(input$mod03_add_option_2, {
 }, ignoreInit = TRUE)
 
 # handle adding the third option (time series with a geological timescale)
-observeEvent(input$mod03_add_option_3, {
+observeEvent(input$mod04_add_option_3, {
   ind <- next_step_index()
 
   # fetch the chosen data.frame once for both the plot and the code output
@@ -182,7 +182,7 @@ observeEvent(input$mod03_add_option_3, {
 
   # add the UI elements to the workflow and report
   add_shinypal_step(
-    input, ind, mod03_ui_option_3, mod03_report_option_3,
+    input, ind, mod04_ui_option_3, mod04_report_option_3,
     list(
       inject(quote(
         output[[paste0("plot_", !!ind)]]()
@@ -201,7 +201,7 @@ observeEvent(input$mod03_add_option_3, {
 }, ignoreInit = TRUE)
 
 # handle adding the fourth option (boxplot)
-observeEvent(input$mod03_add_option_4, {
+observeEvent(input$mod04_add_option_4, {
   ind <- next_step_index()
 
   # fetch the chosen data.frame once for both the plot and the code output
@@ -255,7 +255,7 @@ observeEvent(input$mod03_add_option_4, {
 
   # add the UI elements to the workflow and report
   add_shinypal_step(
-    input, ind, mod03_ui_option_4, mod03_report_option_4,
+    input, ind, mod04_ui_option_4, mod04_report_option_4,
     list(
       inject(quote(
         output[[paste0("plot_", !!ind)]]()
