@@ -42,6 +42,7 @@ local({
 
 # paleo libraries
 library(deeptime)
+library(palaeoverse)
 
 reefs <- readRDS("data/reefs.RDS")
 tetrapods <- readRDS("data/tetrapods.RDS")
