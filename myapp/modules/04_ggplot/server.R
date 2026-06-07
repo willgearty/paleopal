@@ -151,8 +151,9 @@ observeEvent(input$mod04_add_option_3, {
       quote(geom_point())
     }
     # assemble the layers, adding coord_geo() only when the axis box is checked
+    # and deeptime is available
     layers <- list(geom_layer, quote(scale_x_reverse()))
-    if (isTRUE(input[[paste0("axis_", ind)]])) {
+    if (isTRUE(input[[paste0("axis_", ind)]]) && deeptime_available) {
       layers <- c(layers, list(quote(coord_geo())))
     }
     layers <- c(layers, list(quote(theme_classic())))
@@ -188,7 +189,7 @@ observeEvent(input$mod04_add_option_3, {
         output[[paste0("plot_", !!ind)]]()
       ))
     ),
-    c("ggplot2", "deeptime")
+    if (deeptime_available) c("ggplot2", "deeptime") else "ggplot2"
   )
 
   # choices should always include all intermediate data.frames

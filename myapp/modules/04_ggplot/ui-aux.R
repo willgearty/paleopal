@@ -45,8 +45,10 @@ mod04_ui_option_3 <- function(ind) {
       selectInput(paste0("geom_", ind), "Geometry:",
                   choices = c("Points" = "point", "Line" = "line"),
                   selected = "point"),
-      checkboxInput(paste0("axis_", ind),
-                    "Add a geological timescale axis", value = TRUE)
+      if (deeptime_available) {
+        checkboxInput(paste0("axis_", ind),
+                      "Add a geological timescale axis", value = TRUE)
+      }
     )
   )
 }
