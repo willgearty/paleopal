@@ -42,7 +42,7 @@ local({
 
 # paleo libraries
 # deeptime imports grImport2, which imports XML, which has no webR/WASM build
-deeptime_available <- requireNamespace("deeptime", quietly = TRUE)
+deeptime_available <- !shinypal:::is_shinylive() && requireNamespace("deeptime", quietly = TRUE)
 if (deeptime_available) library(deeptime)
 library(palaeoverse)
 
