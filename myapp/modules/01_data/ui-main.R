@@ -14,5 +14,6 @@ btn3 <- actionButton("mod01_add_option_3",
 
 accordion_panel(
   title = "Add Data",
-  if (shinypal:::is_shinylive()) card(btn1, btn3) else card(btn1, btn2, btn3)
+  # only offer the PBDB download option when paleobioDB is available
+  if (pbdb_available) card(btn1, btn2, btn3) else card(btn1, btn3)
 )
