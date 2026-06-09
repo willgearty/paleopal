@@ -9,8 +9,9 @@ observeEvent(input$mod03_add_option_1, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("dataset_", ind)]],
           input[[paste0("column_", ind, "_1")]],
           input[[paste0("column_", ind, "_2")]],
@@ -40,46 +41,30 @@ observeEvent(input$mod03_add_option_1, {
         quoted = TRUE
       )
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
+    fun_workflow = mod03_ui_option_1, fun_report = mod03_report_option_1,
+    libs = "palaeoverse",
+    # surface validation messages before showing the generated code
+    code_guard = function() {
+      req(input[[paste0("dataset_", ind)]],
+          input[[paste0("column_", ind, "_1")]],
+          input[[paste0("column_", ind, "_2")]],
+          input[[paste0("rank_", ind)]],
+          input[[paste0("method_", ind)]])
+      df <- get_int_data(input[[paste0("dataset_", ind)]])()
+      # the age columns must be numeric and complete for bin_time() to run
+      validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]) &&
+                      is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
+                    "Both age columns must be numeric"))
+      validate(need(!anyNA(df[[input[[paste0("column_", ind, "_1")]]]]) &&
+                      !anyNA(df[[input[[paste0("column_", ind, "_2")]]]]),
+                    "Age columns must not contain missing values"))
+    },
+    # choices should always include all intermediate data.frames
+    select_dataset = TRUE,
+    # if chosen dataset is changed, change the column choices (max and min age)
+    column_ids = c(paste0("column_", ind, "_1"),
+                   paste0("column_", ind, "_2"))
   )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]],
-        input[[paste0("column_", ind, "_1")]],
-        input[[paste0("column_", ind, "_2")]],
-        input[[paste0("rank_", ind)]],
-        input[[paste0("method_", ind)]])
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
-    # the age columns must be numeric and complete for bin_time() to run
-    validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]) &&
-                    is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
-                  "Both age columns must be numeric"))
-    validate(need(!anyNA(df[[input[[paste0("column_", ind, "_1")]]]]) &&
-                    !anyNA(df[[input[[paste0("column_", ind, "_2")]]]]),
-                  "Age columns must not contain missing values"))
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow and report
-  add_shinypal_step(
-    input, ind, mod03_ui_option_1, mod03_report_option_1,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c("palaeoverse")
-  )
-
-  # choices should always include all intermediate data.frames
-  df_select_observe(input, ind)
-
-  # if chosen dataset is changed, change the column choices (max and min age)
-  column_select_observe(input, ind, paste0("column_", ind, "_1"))
-  column_select_observe(input, ind, paste0("column_", ind, "_2"))
 }, ignoreInit = TRUE)
 
 # handle adding the second option (look up stages and ages from interval names)
@@ -89,8 +74,9 @@ observeEvent(input$mod03_add_option_2, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("dataset_", ind)]],
           input[[paste0("column_", ind, "_1")]],
           input[[paste0("column_", ind, "_2")]],
@@ -125,42 +111,26 @@ observeEvent(input$mod03_add_option_2, {
       }
       metaExpr(look_up_expr, quoted = TRUE)
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
+    fun_workflow = mod03_ui_option_2, fun_report = mod03_report_option_2,
+    libs = "palaeoverse",
+    # surface validation messages before showing the generated code
+    code_guard = function() {
+      req(input[[paste0("dataset_", ind)]],
+          input[[paste0("column_", ind, "_1")]],
+          input[[paste0("column_", ind, "_2")]],
+          input[[paste0("intkey_", ind)]])
+      df <- get_int_data(input[[paste0("dataset_", ind)]])()
+      # both interval columns must hold interval names (text)
+      validate(need((is.character(df[[input[[paste0("column_", ind, "_1")]]]]) ||
+                       is.factor(df[[input[[paste0("column_", ind, "_1")]]]])) &&
+                      (is.character(df[[input[[paste0("column_", ind, "_2")]]]]) ||
+                         is.factor(df[[input[[paste0("column_", ind, "_2")]]]])),
+                    "Both interval columns must contain interval names (text)"))
+    },
+    # choices should always include all intermediate data.frames
+    select_dataset = TRUE,
+    # if chosen dataset is changed, change the column choices (early and late)
+    column_ids = c(paste0("column_", ind, "_1"),
+                   paste0("column_", ind, "_2"))
   )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]],
-        input[[paste0("column_", ind, "_1")]],
-        input[[paste0("column_", ind, "_2")]],
-        input[[paste0("intkey_", ind)]])
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
-    # both interval columns must hold interval names (text)
-    validate(need((is.character(df[[input[[paste0("column_", ind, "_1")]]]]) ||
-                     is.factor(df[[input[[paste0("column_", ind, "_1")]]]])) &&
-                    (is.character(df[[input[[paste0("column_", ind, "_2")]]]]) ||
-                       is.factor(df[[input[[paste0("column_", ind, "_2")]]]])),
-                  "Both interval columns must contain interval names (text)"))
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow and report
-  add_shinypal_step(
-    input, ind, mod03_ui_option_2, mod03_report_option_2,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c("palaeoverse")
-  )
-
-  # choices should always include all intermediate data.frames
-  df_select_observe(input, ind)
-
-  # if chosen dataset is changed, change the column choices (early and late)
-  column_select_observe(input, ind, paste0("column_", ind, "_1"))
-  column_select_observe(input, ind, paste0("column_", ind, "_2"))
 }, ignoreInit = TRUE)

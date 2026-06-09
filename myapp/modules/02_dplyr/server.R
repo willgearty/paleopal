@@ -9,38 +9,20 @@ observeEvent(input$mod02_add_option_1, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("dataset_", ind)]])
       metaExpr({
         ..(get_int_data(input[[paste0("dataset_", ind)]])()) %>%
           distinct()
       })
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
+    fun_workflow = mod02_ui_option_1, fun_report = mod02_report_option_1,
+    libs = "dplyr",
+    # choices should always include all intermediate data.frames
+    select_dataset = TRUE
   )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]])
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow and report
-  add_shinypal_step(
-    input, ind, mod02_ui_option_1, mod02_report_option_1,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c("dplyr")
-  )
-
-  # choices should always include all intermediate data.frames
-  df_select_observe(input, ind)
 }, ignoreInit = TRUE)
 
 # handle adding the second option
@@ -50,8 +32,9 @@ observeEvent(input$mod02_add_option_2, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]])
       df <- isolate(get_int_data(input[[paste0("dataset_", ind)]])())
       req(df[[input[[paste0("column_", ind)]]]])
@@ -62,33 +45,13 @@ observeEvent(input$mod02_add_option_2, {
                    ..(input[[paste0("text_", ind)]]))
       })
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
+    fun_workflow = mod02_ui_option_2, fun_report = mod02_report_option_2,
+    libs = "dplyr",
+    # choices should always include all intermediate data.frames
+    select_dataset = TRUE,
+    # if chosen dataset is changed, change the column choices
+    column_ids = paste0("column_", ind)
   )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]])
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow and report
-  add_shinypal_step(
-    input, ind, mod02_ui_option_2, mod02_report_option_2,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c("dplyr")
-  )
-
-  # choices should always include all intermediate data.frames
-  df_select_observe(input, ind)
-
-  # if chosen dataset is changed, change the column choices
-  column_select_observe(input, ind, paste0("column_", ind))
 }, ignoreInit = TRUE)
 
 # handle adding the third option (mutate: calculate a new column)
@@ -98,8 +61,9 @@ observeEvent(input$mod02_add_option_3, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("dataset_", ind)]], input[[paste0("mutate_mode_", ind)]])
       df <- isolate(get_int_data(input[[paste0("dataset_", ind)]])())
       mode <- input[[paste0("mutate_mode_", ind)]]
@@ -173,54 +137,38 @@ observeEvent(input$mod02_add_option_3, {
         quoted = TRUE
       )
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
-  )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]], input[[paste0("mutate_mode_", ind)]])
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
-    if (identical(input[[paste0("mutate_mode_", ind)]], "binary")) {
-      # both columns must be chosen and numeric to combine them
-      validate(
-        need(input[[paste0("column_", ind, "_1")]], "Choose a first column"),
-        need(input[[paste0("column_", ind, "_2")]], "Choose a second column")
-      )
-      validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]) &&
-                      is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
-                    "Both columns must be numeric to combine them"))
-    } else {
-      req(input[[paste0("column_", ind)]])
-      # warn (not error) when a numeric transform meets a non-numeric column
-      if (input[[paste0("transform_", ind)]] %in% c("log", "log10", "sqrt", "abs")) {
-        validate(need(is.numeric(df[[input[[paste0("column_", ind)]]]]),
-                      "Column must be numeric for this transformation"))
+    fun_workflow = mod02_ui_option_3, fun_report = mod02_report_option_3,
+    libs = "dplyr",
+    # surface validation messages before showing the generated code
+    code_guard = function() {
+      req(input[[paste0("dataset_", ind)]], input[[paste0("mutate_mode_", ind)]])
+      df <- get_int_data(input[[paste0("dataset_", ind)]])()
+      if (identical(input[[paste0("mutate_mode_", ind)]], "binary")) {
+        # both columns must be chosen and numeric to combine them
+        validate(
+          need(input[[paste0("column_", ind, "_1")]], "Choose a first column"),
+          need(input[[paste0("column_", ind, "_2")]], "Choose a second column")
+        )
+        validate(need(is.numeric(df[[input[[paste0("column_", ind, "_1")]]]]) &&
+                        is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
+                      "Both columns must be numeric to combine them"))
+      } else {
+        req(input[[paste0("column_", ind)]])
+        # warn (not error) when a numeric transform meets a non-numeric column
+        if (input[[paste0("transform_", ind)]] %in% c("log", "log10", "sqrt", "abs")) {
+          validate(need(is.numeric(df[[input[[paste0("column_", ind)]]]]),
+                        "Column must be numeric for this transformation"))
+        }
       }
-    }
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow and report
-  add_shinypal_step(
-    input, ind, mod02_ui_option_3, mod02_report_option_3,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c("dplyr")
+    },
+    # choices should always include all intermediate data.frames
+    select_dataset = TRUE,
+    # if chosen dataset is changed, change the column choices (the single-transform
+    # column plus the two combine columns)
+    column_ids = c(paste0("column_", ind),
+                   paste0("column_", ind, "_1"),
+                   paste0("column_", ind, "_2"))
   )
-
-  # choices should always include all intermediate data.frames
-  df_select_observe(input, ind)
-
-  # if chosen dataset is changed, change the column choices (the single-transform
-  # column plus the two combine columns)
-  column_select_observe(input, ind, paste0("column_", ind))
-  column_select_observe(input, ind, paste0("column_", ind, "_1"))
-  column_select_observe(input, ind, paste0("column_", ind, "_2"))
 }, ignoreInit = TRUE)
 
 # handle adding the fourth option (summarise by group)
@@ -230,8 +178,9 @@ observeEvent(input$mod02_add_option_4, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
           input[[paste0("stat_", ind)]])
       df <- isolate(get_int_data(input[[paste0("dataset_", ind)]])())
@@ -275,44 +224,28 @@ observeEvent(input$mod02_add_option_4, {
         quoted = TRUE
       )
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
-  )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
-        input[[paste0("stat_", ind)]])
-    df <- get_int_data(input[[paste0("dataset_", ind)]])()
-    stat <- input[[paste0("stat_", ind)]]
-    # for non-count statistics, a value column (numeric where required) is needed
-    if (stat != "n") {
-      validate(need(input[[paste0("column_", ind, "_2")]],
-                    "Choose a column to summarise"))
-      if (stat %in% c("mean", "median", "sum", "min", "max", "sd")) {
-        validate(need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
-                      "Column must be numeric for this statistic"))
+    fun_workflow = mod02_ui_option_4, fun_report = mod02_report_option_4,
+    libs = "dplyr",
+    # surface validation messages before showing the generated code
+    code_guard = function() {
+      req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
+          input[[paste0("stat_", ind)]])
+      df <- get_int_data(input[[paste0("dataset_", ind)]])()
+      stat <- input[[paste0("stat_", ind)]]
+      # for non-count statistics, a value column (numeric where required) is needed
+      if (stat != "n") {
+        validate(need(input[[paste0("column_", ind, "_2")]],
+                      "Choose a column to summarise"))
+        if (stat %in% c("mean", "median", "sum", "min", "max", "sd")) {
+          validate(need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
+                        "Column must be numeric for this statistic"))
+        }
       }
-    }
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow and report
-  add_shinypal_step(
-    input, ind, mod02_ui_option_4, mod02_report_option_4,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c("dplyr")
+    },
+    # choices should always include all intermediate data.frames
+    select_dataset = TRUE,
+    # if chosen dataset is changed, change the column choices
+    column_ids = c(paste0("column_", ind, "_1"),
+                   paste0("column_", ind, "_2"))
   )
-
-  # choices should always include all intermediate data.frames
-  df_select_observe(input, ind)
-
-  # if chosen dataset is changed, change the column choices
-  column_select_observe(input, ind, paste0("column_", ind, "_1"))
-  column_select_observe(input, ind, paste0("column_", ind, "_2"))
 }, ignoreInit = TRUE)

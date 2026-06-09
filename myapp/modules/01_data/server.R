@@ -9,8 +9,9 @@ observeEvent(input$mod01_add_option_1, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("palaeoverse_", ind)]])
       if (input[[paste0("palaeoverse_", ind)]] == "reefs") {
         metaExpr({
@@ -22,40 +23,23 @@ observeEvent(input$mod01_add_option_1, {
         })
       }
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
-  )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("palaeoverse_", ind)]])
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow, report, and downloadable markdown
-  # note that any local variables need to be injected with !!
-  add_shinypal_step(
-    input, ind, mod01_ui_option_1, mod01_report_option_1,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c(),
-    list(get_int_data(paste0("occs_", ind)),
-         function() {
-           req(input[[paste0("palaeoverse_", ind)]])
-           if (input[[paste0("palaeoverse_", ind)]] == "reefs") {
-             metaExpr({
-               palaeoverse::reefs
-             })
-           } else if (input[[paste0("palaeoverse_", ind)]] == "tetrapods") {
-             metaExpr({
-               palaeoverse::tetrapods
-             })
-           }
-         })
+    fun_workflow = mod01_ui_option_1, fun_report = mod01_report_option_1,
+    # alternate code for the downloadable report: fully-qualified palaeoverse::
+    ec_subs = list(
+      get_int_data(paste0("occs_", ind)),
+      function() {
+        req(input[[paste0("palaeoverse_", ind)]])
+        if (input[[paste0("palaeoverse_", ind)]] == "reefs") {
+          metaExpr({
+            palaeoverse::reefs
+          })
+        } else if (input[[paste0("palaeoverse_", ind)]] == "tetrapods") {
+          metaExpr({
+            palaeoverse::tetrapods
+          })
+        }
+      }
+    )
   )
 }, ignoreInit = TRUE)
 
@@ -66,35 +50,17 @@ observeEvent(input$mod01_add_option_2, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       req(input[[paste0("genus_", ind)]])
       metaExpr({
         pbdb_occurrences(taxon_name = ..(input[[paste0("genus_", ind)]]),
                          vocab = "pbdb", show = "coords")
       })
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
-  )
-  output[[paste0("code_", ind)]] <- renderPrint({
-    req(input[[paste0("genus_", ind)]])
-    get_chunk(ind)
-  })
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow, report, and downloadable markdown
-  # note that any local variables need to be injected with !!
-  add_shinypal_step(
-    input, ind, mod01_ui_option_2, mod01_report_option_2,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c("paleobioDB")
+    fun_workflow = mod01_ui_option_2, fun_report = mod01_report_option_2,
+    libs = "paleobioDB"
   )
 }, ignoreInit = TRUE)
 
@@ -127,49 +93,34 @@ observeEvent(input$mod01_add_option_3, {
   # build reactive expressions for each instance of this component
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
-  set_int_data(
-    metaReactive2({
+  add_shinypal_data_step(
+    input, output, ind,
+    data = metaReactive2({
       file <- valid_upload()
       metaExpr({
         read.csv(..(file$datapath),
                  skip = ..(input[[paste0("num_rows_", ind)]]))
       })
     }, varname = paste0("occs_", ind)),
-    paste0("occs_", ind)
+    fun_workflow = mod01_ui_option_3, fun_report = mod01_report_option_3,
+    # show the upload validation messages before the generated code
+    code_guard = function() valid_upload(),
+    # alternate code for the downloadable report: read.csv on the uploaded name
+    ec_subs = list(
+      get_int_data(paste0("occs_", ind)),
+      function() {
+        req(input[[paste0("file1_", ind)]],
+            input[[paste0("num_rows_", ind)]])
+        file <- input[[paste0("file1_", ind)]]
+        ext <- tools::file_ext(file$datapath)
+        validate(need(ext == "csv", "Please upload a csv file"))
+        validate(need(input[[paste0("num_rows_", ind)]] >= 0,
+                      "Number of rows must be greater than or equal to 0"))
+        metaExpr(read.csv(..(file$name),
+                          skip = ..(input[[paste0("num_rows_", ind)]])))
+      }
+    )
   )
-
-  output[[paste0("code_", ind)]] <- renderPrint({
-    valid_upload()
-    get_chunk(ind)
-  })
 
   file_observe(input, paste0("file1_", ind))
-
-  clip_observe(input, output, ind, expr(get_chunk(ind)))
-
-  df_modal_observe(input, output, ind, paste0("occs_", ind))
-
-  # add the UI elements to the workflow, report, and downloadable markdown
-  # note that any local variables need to be injected with !!
-  add_shinypal_step(
-    input, ind, mod01_ui_option_3, mod01_report_option_3,
-    list(
-      inject(quote(
-        invisible(get_int_data(paste0("occs_", !!ind))())
-      ))
-    ),
-    c(),
-    list(get_int_data(paste0("occs_", ind)),
-         function() {
-           req(input[[paste0("file1_", ind)]],
-               input[[paste0("num_rows_", ind)]])
-           file <- input[[paste0("file1_", ind)]]
-           ext <- tools::file_ext(file$datapath)
-           validate(need(ext == "csv", "Please upload a csv file"))
-           validate(need(input[[paste0("num_rows_", ind)]] >= 0,
-                         "Number of rows must be greater than or equal to 0"))
-           metaExpr(read.csv(..(file$name),
-                             skip = ..(input[[paste0("num_rows_", ind)]])))
-         })
-  )
 }, ignoreInit = TRUE)
