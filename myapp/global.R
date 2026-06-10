@@ -42,7 +42,7 @@ local({
 
 # paleo libraries
 # deeptime imports grImport2, which imports XML, which has no webR/WASM build
-deeptime_available <- !shinypal:::is_shinylive() && requireNamespace("deeptime", quietly = TRUE)
+deeptime_available <- !is_shinylive() && requireNamespace("deeptime", quietly = TRUE)
 if (deeptime_available) library(deeptime)
 library(palaeoverse)
 
@@ -50,7 +50,7 @@ reefs <- readRDS("data/reefs.RDS")
 tetrapods <- readRDS("data/tetrapods.RDS")
 
 # paleobioDB requires curl, which isn't available in shinylive apps
-pbdb_available <- !shinypal:::is_shinylive() && requireNamespace("paleobioDB", quietly = TRUE)
+pbdb_available <- !is_shinylive() && requireNamespace("paleobioDB", quietly = TRUE)
 if (pbdb_available) library(paleobioDB)
 
 # get list of module directories
