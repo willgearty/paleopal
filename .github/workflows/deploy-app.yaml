@@ -52,6 +52,11 @@ jobs:
                                 gtag('config', 'G-B48C68KGQJ');
                               </script>",
                             include_before_body = shiny::includeHTML("loading.html")))
+          # copy the brand logos and loading spinner to the site root so the
+          # loading splash can reference them
+          file.copy(c("myapp/www/full_logo.png", "myapp/www/logo_tagline.png",
+                      "myapp/www/ammonite-spinner.webp"),
+                    "site", overwrite = TRUE)
 
       - name: Upload site artifact
         if: github.ref == 'refs/heads/main'

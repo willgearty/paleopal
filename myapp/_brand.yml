@@ -1,0 +1,46 @@
+# Brand definition for paleopal, consumed by bslib via bs_theme(brand = TRUE).
+# Spec: https://posit-dev.github.io/brand-yml/
+meta:
+  name: paleopal
+  link:
+    home: https://williamgearty.com/paleopal/
+    github: https://github.com/willgearty/paleopal
+
+# NOTE: bslib does not currently pull a _brand.yml logo into an R Shiny navbar,
+# so the images live in myapp/www/ and are embedded explicitly in ui.R
+logo:
+  small: www/full_logo.png
+  medium: www/logo_tagline.png
+  large: www/logo_tagline.png
+
+color:
+  palette:
+    ink:  "#101419"
+    rust: "#aa4400"
+    teal: "#0e7c7b"
+    sand: "#f5dfbb"
+    plum: "#5d536b"
+  foreground: ink
+  background: "#ffffff"   # kept white for plot/table legibility; try `sand` for a warmer page
+  primary: teal           # links and primary buttons
+  secondary: plum
+  warning: rust
+  light: sand
+  dark: ink
+
+typography:
+  # The brand fonts (IBM Plex Sans for text, IBM Plex Mono for code) are
+  # delivered to the browser via a <link> to Google Fonts in ui.R and
+  # loading.html. They are deliberately NOT declared under a `fonts:` google
+  # source here: in a shinylive/webR build the theme is compiled in the browser,
+  # where R cannot download font files, so bundling through brand.yml would fail.
+  # The family references below only set the CSS font variables; the <link>
+  # supplies the actual font files.
+  base:
+    family: IBM Plex Sans
+    weight: 400
+  headings:
+    family: IBM Plex Sans
+    weight: 600
+  monospace:
+    family: IBM Plex Mono

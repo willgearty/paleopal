@@ -1,0 +1,79 @@
+/* paleopal Welcome / landing hero.
+   Keep these rules in sync with the inlined copy in ../../loading.html so the
+   loading splash and this panel look identical; once the app finishes loading,
+   the only visible change should be the added nav items. */
+
+/* This app renders Bootstrap-3-style Shiny navbar markup whose desktop nav
+   links carry tall default padding -- the bar is fine on mobile (the nav is
+   collapsed) but too tall on desktop once it expands. welcome.css loads BEFORE
+   the framework navbar stylesheet, so these overrides need !important to win.
+   Pin a compact bar height, trim the nav links to fit, and keep .navbar
+   min-height in step with the loading splash's .loading-navbar in
+   ../../loading.html. */
+.navbar {
+  min-height: 2.75rem !important;
+}
+.navbar-brand {
+  /* The inline brand box -- sized by the theme's large font-size/line-height,
+     with anonymous line boxes around the block logo img -- is what padded the
+     bar (confirmed by disabling its font-size + margin-right in devtools). Make
+     it an inline-flex box that just hugs the logo: whitespace-only text nodes
+     are ignored in flex, so its height collapses to the image's. */
+  display: inline-flex !important;
+  align-items: center !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+}
+.navbar-brand .navbar-logo {
+  display: block;
+  height: 1.75rem !important;
+  width: auto;
+}
+.navbar .nav-link {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+  line-height: 1.5 !important;
+}
+/* On desktop, where the nav is expanded, nudge the wordmark down slightly; on
+   mobile the nav is collapsed and the brand should stay put, so this is scoped
+   to the navbar's expand breakpoint (768px). Mirrored in ../../loading.html. */
+@media (min-width: 768px) {
+  .navbar-brand .navbar-logo {
+    margin-top: 7px !important;
+  }
+}
+
+.welcome-hero {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 2rem;
+  text-align: center;
+}
+/* logo + tagline image (replaces the old text title + lead) */
+.welcome-logo {
+  display: block;
+  width: 100%;
+  max-width: 32rem;
+  height: auto;
+  margin: 0 auto 1.5rem;
+}
+.welcome-desc {
+  font-size: 1rem;
+  margin: 0 0 1.5rem;
+}
+.welcome-cue {
+  font-size: 1rem;
+  opacity: 0.75;
+  margin: 0;
+}
+
+/* in dark mode, swap to the dark logo variants (bslib sets data-bs-theme="dark"
+   on the page when the dark-mode toggle is on) */
+[data-bs-theme="dark"] .navbar-brand .navbar-logo {
+  content: url("full_logo_dark.png");
+}
+[data-bs-theme="dark"] .welcome-logo {
+  content: url("logo_tagline_dark.png");
+}
