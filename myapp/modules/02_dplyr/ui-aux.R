@@ -76,7 +76,7 @@ mod02_ui_option_4 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
-      HTML(paste(icon("compress"), "Summarise by group")),
+      HTML(paste(icon("compress"), "Summarize by group")),
       select_dataset_input(ind),
       select_column_input(paste0(ind, "_1"), "Group by:"),
       selectInput(paste0("stat_", ind), "Statistic:",
@@ -91,7 +91,7 @@ mod02_ui_option_4 <- function(ind) {
                   selected = "n"),
       conditionalPanel(
         condition = paste0("input.stat_", ind, " != 'n'"),
-        select_column_input(paste0(ind, "_2"), "Summarise which column:")
+        select_column_input(paste0(ind, "_2"), "Summarize which column:")
       ),
       textInput(paste0("name_", ind), "New column name (optional):",
                 placeholder = "e.g. n_occurrences"),

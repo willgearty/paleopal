@@ -16,6 +16,6 @@ accordion_panel(
                             "Calculate a new column"))),
     actionButton("mod02_add_option_4",
                  HTML(paste(icon("compress", class = "fa-solid"),
-                            "Summarise by group")))
+                            "Summarize by group")))
   )
 )

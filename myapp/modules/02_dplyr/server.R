@@ -171,7 +171,7 @@ observeEvent(input$mod02_add_option_3, {
   )
 }, ignoreInit = TRUE)
 
-# handle adding the fourth option (summarise by group)
+# handle adding the fourth option (summarize by group)
 observeEvent(input$mod02_add_option_4, {
   ind <- next_step_index()
 
@@ -187,7 +187,7 @@ observeEvent(input$mod02_add_option_4, {
       req(df[[input[[paste0("column_", ind, "_1")]]]])
       stat <- input[[paste0("stat_", ind)]]
       out_name <- input[[paste0("name_", ind)]]
-      # count needs no column; every other statistic summarises a value column
+      # count needs no column; every other statistic summarizes a value column
       if (identical(stat, "n")) {
         summary_value <- quote(n())
         if (is.null(out_name) || !nzchar(out_name)) out_name <- "n"
@@ -209,7 +209,7 @@ observeEvent(input$mod02_add_option_4, {
         }
       }
       out_name <- make.names(out_name)
-      # summarise(<out_name> = <summary>, .groups = "drop"); dropping groups
+      # summarize(<out_name> = <summary>, .groups = "drop"); dropping groups
       # returns an ungrouped tibble so later steps don't inherit the grouping
       summ_arg <- list(summary_value)
       names(summ_arg) <- out_name
@@ -218,7 +218,7 @@ observeEvent(input$mod02_add_option_4, {
           ..(get_int_data(input[[paste0("dataset_", ind)]])()) %>%
             group_by(!!..(input[[paste0("column_", ind, "_1")]])) %>%
             SUMM,
-          list(SUMM = as.call(c(quote(summarise), summ_arg,
+          list(SUMM = as.call(c(quote(summarize), summ_arg,
                                 list(.groups = "drop"))))
         ),
         quoted = TRUE
@@ -235,7 +235,7 @@ observeEvent(input$mod02_add_option_4, {
       # for non-count statistics, a value column (numeric where required) is needed
       if (stat != "n") {
         validate(need(input[[paste0("column_", ind, "_2")]],
-                      "Choose a column to summarise"))
+                      "Choose a column to summarize"))
         if (stat %in% c("mean", "median", "sum", "min", "max", "sd")) {
           validate(need(is.numeric(df[[input[[paste0("column_", ind, "_2")]]]]),
                         "Column must be numeric for this statistic"))
