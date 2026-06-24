@@ -10,7 +10,7 @@ observeEvent(input$mod03_add_option_1, {
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
   add_shinypal_data_step(
-    input, output, ind,
+    ind,
     data = metaReactive2({
       req(input[[paste0("dataset_", ind)]],
           input[[paste0("column_", ind, "_1")]],
@@ -75,7 +75,7 @@ observeEvent(input$mod03_add_option_2, {
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
   add_shinypal_data_step(
-    input, output, ind,
+    ind,
     data = metaReactive2({
       req(input[[paste0("dataset_", ind)]],
           input[[paste0("column_", ind, "_1")]],

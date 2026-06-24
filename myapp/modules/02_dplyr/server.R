@@ -10,7 +10,7 @@ observeEvent(input$mod02_add_option_1, {
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
   add_shinypal_data_step(
-    input, output, ind,
+    ind,
     data = metaReactive2({
       req(input[[paste0("dataset_", ind)]])
       metaExpr({
@@ -33,7 +33,7 @@ observeEvent(input$mod02_add_option_2, {
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
   add_shinypal_data_step(
-    input, output, ind,
+    ind,
     data = metaReactive2({
       req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]])
       df <- isolate(get_int_data(input[[paste0("dataset_", ind)]])())
@@ -62,7 +62,7 @@ observeEvent(input$mod02_add_option_3, {
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
   add_shinypal_data_step(
-    input, output, ind,
+    ind,
     data = metaReactive2({
       req(input[[paste0("dataset_", ind)]], input[[paste0("mutate_mode_", ind)]])
       df <- isolate(get_int_data(input[[paste0("dataset_", ind)]])())
@@ -179,7 +179,7 @@ observeEvent(input$mod02_add_option_4, {
   # anything that will be included as code in the report needs to be added to
   # intermediate list, input, or output (or some other global object)
   add_shinypal_data_step(
-    input, output, ind,
+    ind,
     data = metaReactive2({
       req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind, "_1")]],
           input[[paste0("stat_", ind)]])

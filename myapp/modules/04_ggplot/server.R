@@ -15,7 +15,7 @@ observeEvent(input$mod04_add_option_1, {
   })
 
   add_shinypal_plot_step(
-    input, output, ind,
+    ind,
     # make a scatterplot with ggplot
     plot = metaRender2(renderPlot, {
       df <- plot_df()
@@ -61,7 +61,7 @@ observeEvent(input$mod04_add_option_2, {
   })
 
   add_shinypal_plot_step(
-    input, output, ind,
+    ind,
     # make a map of occs with ggplot
     plot = metaRender2(renderPlot, {
       df <- plot_df()
@@ -110,7 +110,7 @@ observeEvent(input$mod04_add_option_3, {
   })
 
   add_shinypal_plot_step(
-    input, output, ind,
+    ind,
     # plot a time series; the geom and the geological timescale axis are toggleable
     plot = metaRender2(renderPlot, {
       df <- plot_df()
@@ -175,7 +175,7 @@ observeEvent(input$mod04_add_option_4, {
   })
 
   add_shinypal_plot_step(
-    input, output, ind,
+    ind,
     # make a box or violin plot: a numeric y-axis grouped by a categorical x-axis
     plot = metaRender2(renderPlot, {
       df <- plot_df()
