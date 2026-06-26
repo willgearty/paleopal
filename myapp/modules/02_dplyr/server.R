@@ -17,7 +17,7 @@ observeEvent(input$mod02_add_option_1, {
         ..(get_int_data(input[[paste0("dataset_", ind)]])()) %>%
           distinct()
       })
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod02_ui_option_1, fun_report = mod02_report_option_1,
     libs = "dplyr",
     # choices should always include all intermediate data.frames
@@ -44,7 +44,7 @@ observeEvent(input$mod02_add_option_2, {
           filter((!!..(input[[paste0("column_", ind)]])) ==
                    ..(input[[paste0("text_", ind)]]))
       })
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod02_ui_option_2, fun_report = mod02_report_option_2,
     libs = "dplyr",
     # choices should always include all intermediate data.frames
@@ -136,7 +136,7 @@ observeEvent(input$mod02_add_option_3, {
         ),
         quoted = TRUE
       )
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod02_ui_option_3, fun_report = mod02_report_option_3,
     libs = "dplyr",
     # surface validation messages before showing the generated code
@@ -223,7 +223,7 @@ observeEvent(input$mod02_add_option_4, {
         ),
         quoted = TRUE
       )
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod02_ui_option_4, fun_report = mod02_report_option_4,
     libs = "dplyr",
     # surface validation messages before showing the generated code

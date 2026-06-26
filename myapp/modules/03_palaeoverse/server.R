@@ -40,7 +40,7 @@ observeEvent(input$mod03_add_option_1, {
         ),
         quoted = TRUE
       )
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod03_ui_option_1, fun_report = mod03_report_option_1,
     libs = "palaeoverse",
     # surface validation messages before showing the generated code
@@ -110,7 +110,7 @@ observeEvent(input$mod03_add_option_2, {
         )
       }
       metaExpr(look_up_expr, quoted = TRUE)
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod03_ui_option_2, fun_report = mod03_report_option_2,
     libs = "palaeoverse",
     # surface validation messages before showing the generated code

@@ -22,11 +22,11 @@ observeEvent(input$mod01_add_option_1, {
           tetrapods
         })
       }
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod01_ui_option_1, fun_report = mod01_report_option_1,
     # alternate code for the downloadable report: fully-qualified palaeoverse::
     ec_subs = list(
-      get_int_data(paste0("occs_", ind)),
+      get_int_data(step_varname(ind)),
       function() {
         req(input[[paste0("palaeoverse_", ind)]])
         if (input[[paste0("palaeoverse_", ind)]] == "reefs") {
@@ -58,7 +58,7 @@ observeEvent(input$mod01_add_option_2, {
         pbdb_occurrences(taxon_name = ..(input[[paste0("genus_", ind)]]),
                          vocab = "pbdb", show = "coords")
       })
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod01_ui_option_2, fun_report = mod01_report_option_2,
     libs = "paleobioDB"
   )
@@ -101,13 +101,13 @@ observeEvent(input$mod01_add_option_3, {
         read.csv(..(file$datapath),
                  skip = ..(input[[paste0("num_rows_", ind)]]))
       })
-    }, varname = paste0("occs_", ind)),
+    }, varname = step_varname(ind)),
     fun_workflow = mod01_ui_option_3, fun_report = mod01_report_option_3,
     # show the upload validation messages before the generated code
     code_guard = function() valid_upload(),
     # alternate code for the downloadable report: read.csv on the uploaded name
     ec_subs = list(
-      get_int_data(paste0("occs_", ind)),
+      get_int_data(step_varname(ind)),
       function() {
         req(input[[paste0("file1_", ind)]],
             input[[paste0("num_rows_", ind)]])
