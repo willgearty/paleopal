@@ -57,7 +57,7 @@ mod04_ui_option_4 <- function(ind) {
   tagList(
     accordion_panel_remove_button(
       ind = ind,
-      HTML(paste(icon("chart-column"), "Make a box or violin plot")),
+      HTML(paste(icon("chart-gantt"), "Make a box or violin plot")),
       select_dataset_input(ind),
       select_column_input(paste0(ind, "_1"),
                           "Choose a grouping column (categorical):",
@@ -67,6 +67,30 @@ mod04_ui_option_4 <- function(ind) {
       selectInput(paste0("geom_", ind), "Geometry:",
                   choices = c("Box plot" = "boxplot", "Violin plot" = "violin"),
                   selected = "boxplot")
+    )
+  )
+}
+
+mod04_ui_option_5 <- function(ind) {
+  tagList(
+    accordion_panel_remove_button(
+      ind = ind,
+      HTML(paste(icon("chart-simple"), "Make a histogram")),
+      select_dataset_input(ind),
+      select_column_input(ind, "Choose a numeric column:", "max_ma"),
+      numericInput(paste0("bins_", ind), "Number of bins:", value = 30,
+                   min = 1, step = 1)
+    )
+  )
+}
+
+mod04_ui_option_6 <- function(ind) {
+  tagList(
+    accordion_panel_remove_button(
+      ind = ind,
+      HTML(paste(icon("chart-column"), "Make a bar plot")),
+      select_dataset_input(ind),
+      select_column_input(ind, "Choose a categorical column:", "formation")
     )
   )
 }
@@ -100,6 +124,24 @@ mod04_report_option_3 <- function(ind) {
 }
 
 mod04_report_option_4 <- function(ind) {
+  tagList(
+    div(
+      verbatimTextOutput_copy(ind),
+      withSpinner(plotOutput(paste0("plot_", ind)))
+    )
+  )
+}
+
+mod04_report_option_5 <- function(ind) {
+  tagList(
+    div(
+      verbatimTextOutput_copy(ind),
+      withSpinner(plotOutput(paste0("plot_", ind)))
+    )
+  )
+}
+
+mod04_report_option_6 <- function(ind) {
   tagList(
     div(
       verbatimTextOutput_copy(ind),

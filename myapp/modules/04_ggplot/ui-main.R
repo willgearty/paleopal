@@ -16,7 +16,13 @@ accordion_panel(
                  HTML(paste(icon("hourglass-half", class = "fa-solid"),
                             "Plot data through time"))),
     actionButton("mod04_add_option_4",
+                 HTML(paste(icon("chart-gantt", class = "fa-solid"),
+                            "Make a box or violin plot"))),
+    actionButton("mod04_add_option_5",
+                 HTML(paste(icon("chart-simple", class = "fa-solid"),
+                            "Make a histogram"))),
+    actionButton("mod04_add_option_6",
                  HTML(paste(icon("chart-column", class = "fa-solid"),
-                            "Make a box or violin plot")))
+                            "Make a bar plot")))
   )
 )

@@ -220,3 +220,86 @@ observeEvent(input$mod04_add_option_4, {
                    paste0("column_", ind, "_2"))
   )
 }, ignoreInit = TRUE)
+
+# handle adding the fifth option (histogram)
+observeEvent(input$mod04_add_option_5, {
+  ind <- next_step_index()
+
+  # fetch the chosen data.frame once for both the plot and the code output
+  plot_df <- reactive({
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]],
+        get_int_data(input[[paste0("dataset_", ind)]]))
+    get_int_data(input[[paste0("dataset_", ind)]])()
+  })
+
+  add_shinypal_plot_step(
+    ind,
+    # histogram of one numeric column; bin count is user-adjustable
+    plot = metaRender2(renderPlot, {
+      df <- plot_df()
+      # leave the plot blank (via req) rather than repeating the validation
+      # message -- the code chunk shown just above already displays it
+      req(df[[input[[paste0("column_", ind)]]]])
+      req(is.numeric(df[[input[[paste0("column_", ind)]]]]))
+      # fall back to ggplot's default of 30 bins until the user enters a value
+      bins <- input[[paste0("bins_", ind)]]
+      if (is.null(bins) || is.na(bins) || bins < 1) bins <- 30
+      metaExpr({
+        ggplot(..(get_int_data(input[[paste0("dataset_", ind)]])()),
+               aes(x = !!..(input[[paste0("column_", ind)]]))) +
+          geom_histogram(bins = ..(bins), fill = "red") +
+          theme_classic()
+      })
+    }),
+    fun_workflow = mod04_ui_option_5, fun_report = mod04_report_option_5,
+    libs = "ggplot2",
+    # surface validation messages before showing the generated code
+    code_guard = function() {
+      df <- plot_df()
+      validate(need(is.numeric(df[[input[[paste0("column_", ind)]]]]),
+                    "Column must be numeric for a histogram"))
+    },
+    column_ids = paste0("column_", ind)
+  )
+}, ignoreInit = TRUE)
+
+# handle adding the sixth option (bar plot of category counts)
+observeEvent(input$mod04_add_option_6, {
+  ind <- next_step_index()
+
+  # fetch the chosen data.frame once for both the plot and the code output
+  plot_df <- reactive({
+    req(input[[paste0("dataset_", ind)]], input[[paste0("column_", ind)]],
+        get_int_data(input[[paste0("dataset_", ind)]]))
+    get_int_data(input[[paste0("dataset_", ind)]])()
+  })
+
+  add_shinypal_plot_step(
+    ind,
+    # bar plot of one categorical column's counts with ggplot
+    plot = metaRender2(renderPlot, {
+      df <- plot_df()
+      # leave the plot blank (via req) rather than repeating the validation
+      # message -- the code chunk shown just above already displays it
+      req(df[[input[[paste0("column_", ind)]]]])
+      req(is.character(df[[input[[paste0("column_", ind)]]]]) ||
+            is.factor(df[[input[[paste0("column_", ind)]]]]))
+      metaExpr({
+        ggplot(..(get_int_data(input[[paste0("dataset_", ind)]])()),
+               aes(x = !!..(input[[paste0("column_", ind)]]))) +
+          geom_bar(fill = "red") +
+          theme_classic()
+      })
+    }),
+    fun_workflow = mod04_ui_option_6, fun_report = mod04_report_option_6,
+    libs = "ggplot2",
+    # surface validation messages before showing the generated code
+    code_guard = function() {
+      df <- plot_df()
+      validate(need(is.character(df[[input[[paste0("column_", ind)]]]]) ||
+                      is.factor(df[[input[[paste0("column_", ind)]]]]),
+                    "Column must be categorical (text or factor) for a bar plot"))
+    },
+    column_ids = paste0("column_", ind)
+  )
+}, ignoreInit = TRUE)
