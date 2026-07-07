@@ -22,9 +22,6 @@ library(shinycssloaders)
 # for code injection
 library(rlang)
 
-# webR/shinylive's recursion budget is far shallower than desktop R's
-if (is_shinylive()) options(expressions = 5e4)
-
 # libraries for data handling/viz
 library(dplyr)
 library(munsell)
