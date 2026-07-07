@@ -22,16 +22,18 @@ tagList(
     )
   ),
   page_navbar(
+    id = "tabs",
     theme = bs_theme(version = 5, preset = "bootstrap", brand = TRUE),
     fillable_mobile = TRUE,
     ## title ----
     # brand wordmark in the navbar
     title = img(src = "full_logo.png", alt = "paleopal", class = "navbar-logo"),
     # land on the Welcome panel so the app matches the loading splash on startup
-    selected = "Welcome",
+    selected = "welcome",
     ## panels ----
     nav_panel(
       "Welcome",
+      value = "welcome",
       div(
         class = "welcome-hero",
         # keep this hero in sync with loading.html so the loading splash and
@@ -47,10 +49,12 @@ tagList(
     ),
     nav_panel(
       "Conduct an Analysis",
+      value = "analysis",
       shinypal_ui(modules)
     ),
     nav_panel(
       "About",
+      value = "about",
       p(HTML("This was made with love by <a href='https://github.com/willgearty' target = '_blank'>William Gearty</a>")),
       p(HTML("The source code for the <strong>paleopal</strong> Shiny app is available <a href='https://github.com/willgearty/paleopal' target = '_blank'>on GitHub</a>. This app is built using the <a href='https://github.com/willgearty/shinypal' target = '_blank'>shinypal framework</a> and hosted as a <a href='https://docs.r-wasm.org/' target = '_blank'>webr package</a> with GitHub pages using the <a href='https://posit-dev.github.io/r-shinylive/' target = '_blank'>shinylive package</a>."))
     ),
